@@ -1,0 +1,6 @@
+@import "./typography.css";
+
+body {
+  color: red;
+  font-family: "JJannon";
+}

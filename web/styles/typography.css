@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "JJannon";
+  src: url("../fonts/JJannon-Regular.woff2") format("woff2"),
+    url("../fonts/JJannon-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "JJannon";
+  src: url("../fonts/JJannon-Italic.woff2") format("woff2"),
+    url("../fonts/JJannon-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+}
