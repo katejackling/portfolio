@@ -28,23 +28,23 @@ const withCSS = require("@zeit/next-css");
 // });
 
 module.exports = withCSS({
-  cssModules: true,
-  cssLoaderOptions: {
-    importLoaders: 1,
-    localIdentName: isProduction ? "[hash:base64:5]" : "[name]__[local]___[hash:base64:5]",
-    url: false
-  },
-  webpack: function(config) {
-    config.module.rules.push({
-      test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
-      use: {
-        loader: "url-loader",
-        options: {
-          limit: 100000,
-          name: "[name].[ext]"
-        }
-      }
-    });
-    return config;
-  }
+	cssModules: true,
+	cssLoaderOptions: {
+		importLoaders: 1,
+		url: false,
+		localIdentName: isProduction ? "[hash:base64:5]" : "[name]__[local]"
+	},
+	webpack: function(config) {
+		config.module.rules.push({
+			test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+			use: {
+				loader: "url-loader",
+				options: {
+					limit: 100000,
+					name: "[name].[ext]"
+				}
+			}
+		});
+		return config;
+	}
 });

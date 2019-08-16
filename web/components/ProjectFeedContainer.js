@@ -1,5 +1,6 @@
 import client from "../client";
 import ProjectFeed from "../components/ProjectFeed";
+import { capitalize } from "../scripts/utils";
 
 class ProjectFeedContainer extends React.Component {
   state = { posts: [] };
@@ -11,7 +12,13 @@ class ProjectFeedContainer extends React.Component {
   }
 
   render() {
-    return <ProjectFeed posts={this.state.posts} />;
+    return (
+      <ProjectFeed
+        title={capitalize(this.props.type)}
+        slug={this.props.type}
+        posts={this.state.posts}
+      />
+    );
   }
 }
 

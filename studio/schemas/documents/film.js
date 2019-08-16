@@ -21,10 +21,7 @@ export default {
       title: 'Content',
       name: 'content',
       type: 'array',
-      of: [{ type: 'figure' }, { type: 'mux' }],
-      options: {
-        layout: 'grid'
-      }
+      of: [{ type: 'viewerSingle' }, { type: 'viewerPair' }]
     }
   ]
 }

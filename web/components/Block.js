@@ -1,4 +1,3 @@
-import React from "react";
 import BlockContent from "@sanity/block-content-to-react";
 import client from "../client";
 

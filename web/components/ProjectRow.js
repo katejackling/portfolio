@@ -1,38 +1,36 @@
 import client from "../client";
-import Img from "../components/Img";
-import { withRouter } from "next/router";
-import styles from "./ProjectRow.module.css";
-// import { TweenMax, Draggable } from "gsap/all";
+import Media from "./Media";
 
-console.log(styles);
+import { useContext } from "react";
+import { Context } from "./Context";
 
-class ProjectRow extends React.Component {
-  render() {
-    const content = this.props.content;
+function ProjectRow(props) {
+  let setSlide = (slideIndex, viewerID) => () => {
+    dispatch({ type: "set-slide", payload: slideIndex });
+    dispatch({ type: "set-viewer", payload: viewerID });
+    dispatch({ type: "increment" });
+  };
 
-    return (
-      <ul id="test" className={styles.ok}>
-        {content.map(({ _key, alt = "", asset = [] }) => (
-          <li key={_key}>
-            <Img alt={alt} asset={asset} />
-          </li>
-        ))}
-      </ul>
-    );
-  }
+  let { state, dispatch } = useContext(Context);
+  const { content, id, total } = props;
 
-  componentDidMount() {
-    const GSAP = require("gsap/all");
-    const { TweenMax, TimelineLite, Power4, Draggable } = GSAP;
-    Draggable.create("#test", {
-      type: "scrollLeft",
-      edgeResistance: 0.8,
-      dragResistance: 0.05,
-      throwProps: true,
-      lockAxis: true,
-      dragClickables: true
-    });
-  }
+  return (
+    <ul>
+      {content.map(({ _key, alt = "", media = {} }, i) => (
+        <li key={_key} onClick={setSlide(i, id)}>
+          <figure>
+            <Media
+              asset={media.condition ? media.video.asset : media.image.asset}
+              type={media.condition ? "video" : "image"}
+            />
+            <figcaption>
+              {i + 1}/{total}
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 export default ProjectRow;

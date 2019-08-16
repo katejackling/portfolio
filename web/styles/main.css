@@ -1,6 +1,45 @@
+@import "./reset.css";
+@import "./base.css";
 @import "./typography.css";
+@import "./custom-properties.css";
+
+::selection {
+  background: rgba(0, 0, 0, 0.99);
+  color: white;
+}
+::-moz-selection {
+  background: rgba(0, 0, 0, 0.99);
+  color: white;
+}
+
+html {
+  font-size: 16px;
+}
 
 body {
-  color: red;
   font-family: "JJannon";
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*  Main */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+main {
+  position: relative;
+  display: block;
+  margin-top: calc(var(--headerH) + var(--marginMedium));
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*  Intro */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*  Footer */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+footer {
+  padding: var(--marginOuter);
 }

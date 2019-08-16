@@ -1,30 +1,23 @@
 import conditionalFields from '../../components/conditionalFieldsCustomInputComponent'
 
 export default {
+  title: 'Asset',
   name: 'asset',
   type: 'object',
-  title: 'Asset',
+  inputComponent: conditionalFields,
   fields: [
     {
-      title: 'Asset',
-      name: 'aFieldWithConditions',
-      type: 'object',
-      inputComponent: conditionalFields,
-      fields: [
-        {
-          title: 'Is video?',
-          name: 'condition',
-          type: 'boolean'
-        },
-        {
-          name: 'video',
-          type: 'mux'
-        },
-        {
-          name: 'image',
-          type: 'figure'
-        }
-      ]
+      title: 'Is video?',
+      name: 'condition',
+      type: 'boolean'
+    },
+    {
+      name: 'video',
+      type: 'mux'
+    },
+    {
+      name: 'image',
+      type: 'figure'
     }
   ]
 }

@@ -31,6 +31,10 @@ import intro50 from './objects/intro/intro50'
 import intro75 from './objects/intro/intro75'
 import introPair from './objects/intro/introPair'
 
+// Viewer sections
+import viewerSingle from './objects/viewer/viewerSingle'
+import viewerPair from './objects/viewer/viewerPair'
+
 // Landing page sections
 import hero from './objects/hero'
 import imageSection from './objects/imageSection'
@@ -67,6 +71,8 @@ export default createSchema({
     simplePortableText,
     siteConfig,
     stilllife,
-    textSection
+    textSection,
+    viewerPair,
+    viewerSingle
   ])
 })

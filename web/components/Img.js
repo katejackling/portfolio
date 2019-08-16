@@ -1,5 +1,7 @@
 import client from "../client";
 import imageUrlBuilder from "@sanity/image-url";
+import lazySizes from "lazysizes";
+import "lazysizes/plugins/attrchange/ls.attrchange";
 
 class Img extends React.Component {
   state = { dimensions: [] };
@@ -11,10 +13,6 @@ class Img extends React.Component {
         this.setState({ dimensions: dimensions });
       });
   }
-
-  //   Index.getInitialProps = async () => ({
-  //   about: await client.fetch(`*[_id == "about"]`)
-  // });
 
   render() {
     const { aspectRatio = "", height = "", width = "" } = this.state.dimensions;
@@ -36,7 +34,7 @@ class Img extends React.Component {
       2760,
       3000
     ];
-    const { alt, asset } = this.props;
+    const { alt, asset, fit } = this.props;
 
     const sizeURLs = sizes.map(function(size) {
       return `${builder
