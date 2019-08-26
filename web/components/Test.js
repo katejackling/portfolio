@@ -1,50 +1,68 @@
-import { useContext } from "react";
-import { Context } from "./Context";
+import { render } from "react-dom";
+import React from "react";
+import { useSpring, animated, interpolate, config } from "react-spring";
+import { useGesture } from "react-use-gesture";
+import { clamp } from "lodash";
 
-export default function Test() {
-  // [A]
-  let { state, dispatch } = useContext(Context);
+const boundaries = { left: -100, right: 0 };
 
-  // [B]
-  React.useEffect(() => {
-    document.body.style.backgroundColor = state.currentColor;
-  }, [state.currentColor]);
+function Test(props) {
+	const [{ x }, set] = useSpring(() => ({
+		x: 0,
+		config: { mass: 1, tension: 300, friction: 20 }
+	}));
+	const bind = useGesture({
+		onDrag: ({ down, delta, temp = [x.getValue()] }) => {
+			const { right, left } = boundaries;
+			console.log(down, delta, temp, right, left);
+			// set({
+			// 	x: temp[0] + delta[0]
+			// });
+			set({
+				x: down
+					? clamp(temp[0] + delta[0], left - 30, right + 30)
+					: clamp(temp[0] + delta[0], left, right)
+			});
+			console.log(temp[0], delta[0]);
+			return temp;
+		}
+	});
 
-  // [C]
-  let inc = () => dispatch({ type: "increment" });
-  let dec = () => dispatch({ type: "decrement" });
-  let reset = () => dispatch({ type: "reset" });
-  let setColor = color => () => dispatch({ type: "set-color", payload: color });
+	return (
+		<div id="root">
+			<animated.div
+				{...bind()}
+				style={{ transform: interpolate([x], x => `translate3d(${x}px,0,0)`) }}
+			/>
+			<style jsx global>{`
+				#root {
+					width: 280px;
+					height: 280px;
+					background: lavender;
+					border-radius: 16px;
+				}
 
-  let setSlide = slideIndex => () => dispatch({ type: "set-slide", payload: slideIndex });
+				#root > div {
+					width: 380px;
+					height: 80px;
+					background: hotpink;
+					border-radius: 16px;
+					cursor: -webkit-grab;
+					display: flex;
+					flex-shrink: 0;
+					align-items: center;
+					justify-content: center;
+					color: white;
+					white-space: pre;
+					will-change: transform;
+				}
 
-  //console.log(state.slideIndex);
-
-  return (
-    <React.Fragment>
-      <div style={{ textAlign: "center" }}>
-        <p>
-          Current color is: <b>{state.currentColor}</b>
-        </p>
-        <p>
-          Current count: <b>{state.count}</b>
-        </p>
-      </div>
-      <div style={{ paddingTop: 40 }}>
-        <p>Count controls:</p>
-        <button onClick={inc}>Increment!</button>
-        <button onClick={dec}>Decrement!</button>
-      </div>
-      <div>
-        <p>Color controls:</p>
-        <button onClick={setColor("green")}>Change to green!</button>
-        <button onClick={setColor("papayawhip")}>Change to papayawhip!</button>
-        <button onClick={setSlide(2)}>Update Slide</button>
-      </div>
-      <div>
-        <p>Reset changes:</p>
-        <button onClick={reset}>Reset!</button>
-      </div>
-    </React.Fragment>
-  );
+				#root > div:active {
+					cursor: -webkit-grabbing;
+				}
+			`}</style>
+		</div>
+	);
 }
+
+export default Test;

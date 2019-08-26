@@ -1,18 +1,15 @@
 import React from 'react'
 
 export default {
-	name: 'viewerPair',
+	name: 'viewerContain',
 	type: 'object',
-	title: 'Pair',
-	fields: [
-		{ title: 'Media', name: 'media_left', type: 'media' },
-		{ title: 'Media', name: 'media_right', type: 'media' }
-	],
+	title: 'Single Contain',
+	fields: [{ title: 'Media', name: 'media', type: 'media' }],
 	preview: {
 		select: {
-			media: 'media_left',
-			playbackId: 'media_left.video.mux.asset.playbackId',
-			imageURL: 'media_left.image.asset.url'
+			media: 'media',
+			playbackId: 'media.video.mux.asset.playbackId',
+			imageURL: 'media.image.asset.url'
 		},
 		prepare(selection) {
 			const { media, playbackId, imageURL } = selection

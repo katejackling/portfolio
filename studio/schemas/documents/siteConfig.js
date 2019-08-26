@@ -14,12 +14,6 @@ export default {
 			title: 'Site title'
 		},
 		{
-			title: 'URL',
-			name: 'url',
-			type: 'url',
-			description: 'The main site url. Used to create canonical url'
-		},
-		{
 			title: 'Site language',
 			description: 'Should be a valid bcp47 language code like en, en-US, no or nb-NO',
 			name: 'lang',
@@ -28,21 +22,22 @@ export default {
 				Rule.custom(lang => (bcp47.parse(lang) ? true : 'Please use a valid bcp47 code'))
 		},
 		{
-			title: 'Brand logo',
-			description: 'Best choice is to use an SVG where the color are set with currentColor',
-			name: 'logo',
-			type: 'image',
-			fields: [
-				{
-					name: 'alt',
-					type: 'string',
-					title: 'Alternative text',
-					description: 'Important for SEO and accessiblity.',
-					options: {
-						isHighlighted: true
-					}
-				}
+			name: 'description',
+			type: 'text',
+			title: 'Description',
+			validation: Rule => [
+				Rule.required()
+					.max(160)
+					.warning('The meta description should not exceed 160 characters')
 			]
+		},
+		{
+			title: 'Open Graph Images',
+			name: 'ogImages',
+			description: 'Add one or more images to represent the website',
+			type: 'array',
+			of: [{ type: 'figure' }],
+			options: { layout: 'grid' }
 		}
 	]
 }

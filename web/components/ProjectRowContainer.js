@@ -1,154 +1,134 @@
-import client from "../client";
+import { useState, useLayoutEffect, useRef } from "react";
 import { withRouter } from "next/router";
+import useMeasure from "../utils/useMeasure";
+import { useSpring, animated, interpolate, config } from "react-spring";
+import { useGesture } from "react-use-gesture";
+import { clamp } from "lodash";
+
+import client from "../client";
+
 import Media from "./Media";
 import ProjectRow from "../components/ProjectRow";
 
-class ProjectRowContainer extends React.Component {
-  state = {
-    width: 0,
-    height: 0,
-    enableSlider: false
-  };
+function ProjectRowContainer(props) {
+	const [sliderRef, sliderSize] = useMeasure();
+	const [contentRef, contentSize] = useMeasure();
 
-  sliderInstance = null;
+	let sliderBoundaries = { left: sliderSize.width - contentSize.width, right: 0 };
+	let sliderEnabled = contentSize.width > sliderSize.width ? true : false;
 
-  componentDidMount() {
-    this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
-    document.addEventListener("lazyloaded", this.updateDimensions);
+	const [{ x }, set] = useSpring(() => ({
+		x: 0,
+		config: { mass: 2, tension: 1000, friction: 100 }
+	}));
+	const bind = useGesture({
+		onDrag: ({ down, delta, velocity, distance, direction, time, temp = [x.getValue()] }) => {
+			const { right, left } = sliderBoundaries;
+			// console.log(down, delta, velocity, distance, direction, time);
+			set({
+				x: down
+					? clamp(
+							temp[0] + delta[0],
+							left - sliderSize.width * 0.1,
+							right + sliderSize.width * 0.1
+					  )
+					: clamp(temp[0] + delta[0] * (velocity < 1 ? 1 : velocity * 2), left, right)
+			});
+			return temp;
+		}
+	});
 
-    const GSAP = require("gsap/all");
-    require("../scripts/ThrowPropsPlugin.js");
-    const { TweenMax, TimelineLite, Power4, Draggable } = GSAP;
-    const plugins = [ThrowPropsPlugin];
+	const { content, id, total } = props;
 
-    this.sliderInstance = Draggable.create(this.sliderRef, {
-      type: "scrollLeft",
-      edgeResistance: 0.8,
-      dragResistance: 0.05,
-      throwProps: true,
-      lockAxis: true,
-      dragClickables: true
-    })[0];
-  }
+	return (
+		<div className="slider" {...sliderRef}>
+			<animated.div
+				className="slider__wrapper"
+				{...bind()}
+				{...contentRef}
+				style={{
+					transform: sliderEnabled
+						? interpolate([x], x => `translate3d(${x}px,0,0)`)
+						: "none"
+				}}
+			>
+				<ProjectRow content={content} id={id} total={total} />
+			</animated.div>
+			<style jsx global>{`
+				.slider {
+					width: 100%;
+					overflow-x: hidden;
+					overflow-y: hidden;
+				}
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState && this.state.width !== prevState.width) {
-      if (this.sliderInstance) {
-        this.sliderInstance.enabled(this.state.enableSlider);
-      }
-    }
-  }
+				.slider__wrapper {
+					display: inline-block;
+					min-width: 100%;
+				}
 
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
-    document.removeEventListener("lazyloaded", this.updateDimensions);
-  }
+				.slider ul {
+					display: flex;
+					justify-content: space-between;
+					padding: calc(var(--marginOuter) / 2);
+				}
 
-  updateDimensions = () => {
-    const w = window,
-      d = document,
-      documentElement = d.documentElement,
-      body = d.getElementsByTagName("body")[0],
-      width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
-      height = w.innerHeight || documentElement.clientHeight || body.clientHeight,
-      sliderItems = this.sliderRef.querySelectorAll("li");
+				.slider li {
+					padding: calc(var(--marginOuter) / 2);
+				}
 
-    let sliderItemsWidth = 0;
+				.slider li figure {
+					position: relative;
+				}
 
-    for (let i = 0; i < sliderItems.length; i++) {
-      const sliderItemBCR = sliderItems[i].getBoundingClientRect();
-      //console.log(sliderItemBCR, sliderItemBCR.width);
-      sliderItemsWidth += sliderItemBCR.width;
-    }
+				.slider img,
+				.slider video {
+					pointer-events: none;
+					height: 10rem !important;
+					width: auto !important;
+					user-select: none;
+				}
 
-    const enableSlider = sliderItemsWidth > width ? true : false;
+				@media screen and (max-width: 639px) {
+				}
 
-    // console.log(sliderItems, sliderItemsWidth, enableSlider);
+				@media screen and (min-width: 640px) {
+					.slider li figure {
+						padding: 0 calc(2rem - var(--marginOuter) / 2) 0 0;
+						background: red;
+					}
 
-    this.setState({ width, height, enableSlider });
-    if (this.sliderInstance) {
-      this.sliderInstance.enabled(this.state.enableSlider);
-    }
-  };
+					.slider ul {
+						counter-reset: section;
+					}
 
-  render() {
-    const { content, id, total } = this.props;
+					.slider li {
+						counter-increment: section;
+					}
 
-    return (
-      <div className="slider" ref={div => (this.sliderRef = div)}>
-        <ProjectRow content={content} id={id} total={total} />
+					.slider li figure figcaption {
+						position: absolute;
+						top: 0;
+						left: 100%;
+						white-space: nowrap;
+						transform: rotate(-90deg) translate(-100%, -100%);
+						transform-origin: top left;
+						padding: 0.5rem 0 0 0;
+					}
+				}
+			`}</style>
+			<style jsx>{`
+				.slider {
+					${sliderEnabled ? "cursor: grab !important;" : ""}
+				}
 
-        <style jsx global>{`
-          .slider {
-            width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-          }
-          .slider ul {
-            display: flex;
-            justify-content: space-between;
-            padding: calc(var(--marginOuter) / 2);
-          }
-
-          .slider li {
-            padding: calc(var(--marginOuter) / 2);
-          }
-
-          .slider li figure {
-            position: relative;
-          }
-
-          .slider img,
-          .slider video {
-            height: 10rem !important;
-            width: auto !important;
-          }
-
-          @media screen and (max-width: 639px) {
-          }
-
-          @media screen and (min-width: 640px) {
-            .slider li figure {
-              padding: 0 calc(2rem - var(--marginOuter) / 2) 0 0;
-              background: red;
-            }
-
-            .slider ul {
-              counter-reset: section;
-            }
-
-            .slider li {
-              counter-increment: section;
-            }
-
-            .slider li figure figcaption {
-              position: absolute;
-              top: 0;
-              left: 100%;
-              white-space: nowrap;
-              transform: rotate(-90deg) translate(-100%, -100%);
-              transform-origin: top left;
-              padding: 0.5rem 0 0 0;
-            }
-          }
-        `}</style>
-        <style jsx>{`
-          .slider {
-            ${this.state.enableSlider ? "cursor: grab !important;" : ""}
-          }
-
-          .slider:active {
-            ${this.state.enableSlider
-              ? "cursor: grabbing !important; cursor: -moz-grabbing !important; cursor: -webkit-grabbing !important;"
-              : ""}
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  //   content: counter(section) "/${total}";
+				.slider:active {
+					${sliderEnabled
+						? "cursor: grabbing !important; cursor: -moz-grabbing !important; cursor: -webkit-grabbing !important;"
+						: ""}
+				}
+			`}</style>
+		</div>
+	);
 }
 
 export default ProjectRowContainer;
