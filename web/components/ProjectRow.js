@@ -1,151 +1,56 @@
-import { useContext } from "react";
-import { Context } from "./Context";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import useLockBodyScroll from "../utils/useLockBodyScroll";
-
+import { enableViewer } from "../utils/redux/actions";
 import client from "../client";
-import Media from "./Media";
+
+import ProjectRowItem from "../components/ProjectRowItem";
 
 function ProjectRow(props) {
-	let setSlide = (slideIndex, viewerID) => () => {
-		dispatch({ type: "set-slide", payload: slideIndex });
-		dispatch({ type: "set-viewer", payload: viewerID });
-		dispatch({ type: "increment" });
-	};
-
-	let { state, dispatch } = useContext(Context);
-	const { content, id, total } = props;
-
+	const { content, id, total, viewerOpen, enableViewer, slideIndex, clickEnabled } = props;
+	let rowIndex = 0;
 	return (
 		<ul>
-			{content.map(
-				(
-					{
-						_key,
-						_type,
-						media = undefined,
-						media_left = undefined,
-						media_right = undefined
-					},
-					i
-				) => {
-					if (_type !== "viewerPair") {
-						return (
-							<>
-								<li key={_key}>
-									<figure>
-										<Media
-											type={media && media.type}
-											asset={
-												media && media.type === "video"
-													? media.video.mux.asset
-													: media.image.asset
-											}
-											gif={media && media.type === "video"}
-										/>
-										<figcaption>
-											{i + 1}/{total}
-										</figcaption>
-									</figure>
-								</li>
-								<li key={_key}>
-									<figure>
-										<Media
-											type={media && media.type}
-											asset={
-												media && media.type === "video"
-													? media.video.mux.asset
-													: media.image.asset
-											}
-											gif={media && media.type === "video"}
-										/>
-										<figcaption>
-											{i + 1}/{total}
-										</figcaption>
-									</figure>
-								</li>
-								<li key={_key}>
-									<figure>
-										<Media
-											type={media && media.type}
-											asset={
-												media && media.type === "video"
-													? media.video.mux.asset
-													: media.image.asset
-											}
-											gif={media && media.type === "video"}
-										/>
-										<figcaption>
-											{i + 1}/{total}
-										</figcaption>
-									</figure>
-								</li>
-								<li key={_key}>
-									<figure>
-										<Media
-											type={media && media.type}
-											asset={
-												media && media.type === "video"
-													? media.video.mux.asset
-													: media.image.asset
-											}
-											gif={media && media.type === "video"}
-										/>
-										<figcaption>
-											{i + 1}/{total}
-										</figcaption>
-									</figure>
-								</li>
-							</>
-						);
-					} else {
-						return (
-							<>
-								<li key={_key + "_left"} onClick={setSlide(i, id)}>
-									<figure>
-										<Media
-											type={media_left && media_left.type}
-											asset={
-												media_left && media_left.type === "video"
-													? media_left.video.mux.asset
-													: media_left.image.asset
-											}
-											gif={media_left && media_left.type === "video"}
-										/>
-										<figcaption>
-											{i + 1}/{total}
-										</figcaption>
-									</figure>
-								</li>
-								<li key={_key + "_right"} onClick={setSlide(i, id)}>
-									<figure>
-										<Media
-											type={media_right && media_right.type}
-											asset={
-												media_right && media_right.type === "video"
-													? media_right.video.mux.asset
-													: media_right.image.asset
-											}
-											gif={media_right && media_right.type === "video"}
-										/>
-										<figcaption>
-											{i + 1}/{total}
-										</figcaption>
-									</figure>
-								</li>{" "}
-							</>
-						);
-					}
-				}
-			)}
+			{content.map(({ _type, media, media_left, media_right }, i) => {
+				rowIndex++;
+				return (
+					<li
+						key={rowIndex}
+						onMouseUp={() => {
+							clickEnabled && enableViewer(id, i);
+						}}
+					>
+						{(media_left || media) && (
+							<ProjectRowItem
+								media={media ? media : media_left}
+								rowIndex={rowIndex}
+								total={total}
+							/>
+						)}
+						{media_right && (
+							<ProjectRowItem
+								media={media_right}
+								rowIndex={rowIndex + 1}
+								total={total}
+							/>
+						)}
+					</li>
+				);
+				media_right && rowIndex++;
+			})}
 		</ul>
 	);
 }
 
-export default ProjectRow;
+const mapStateToProps = state => ({
+	viewerOpen: state.viewer.viewerOpen,
+	viewerID: state.viewer.viewerID,
+	slideIndex: state.viewer.slideIndex
+});
 
-// console.log(
-// 	content[0].media.type && content[0].media.type === "video"
-// 		? content[0].media.video.mux.asset
-// 		: content[0].media.image.asset
-// );
+const mapDispatchToProps = dispatch => bindActionCreators({ enableViewer }, dispatch);
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ProjectRow);

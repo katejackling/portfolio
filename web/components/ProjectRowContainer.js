@@ -1,6 +1,7 @@
 import { useState, useLayoutEffect, useRef } from "react";
 import { withRouter } from "next/router";
-import useMeasure from "../utils/useMeasure";
+import useMeasure from "../utils/hooks/useMeasure";
+import useWindowSize from "../utils/hooks/useWindowSize";
 import { useSpring, animated, interpolate, config } from "react-spring";
 import { useGesture } from "react-use-gesture";
 import { clamp } from "lodash";
@@ -13,13 +14,17 @@ import ProjectRow from "../components/ProjectRow";
 function ProjectRowContainer(props) {
 	const [sliderRef, sliderSize] = useMeasure();
 	const [contentRef, contentSize] = useMeasure();
+	const [clickEnabled, toggleClick] = useState(false);
 
 	let sliderBoundaries = { left: sliderSize.width - contentSize.width, right: 0 };
 	let sliderEnabled = contentSize.width > sliderSize.width ? true : false;
 
 	const [{ x }, set] = useSpring(() => ({
 		x: 0,
-		config: { mass: 2, tension: 1000, friction: 100 }
+		config: { mass: 2, tension: 1000, friction: 100 },
+		onRest: function() {
+			toggleClick(true);
+		}
 	}));
 	const bind = useGesture({
 		onDrag: ({ down, delta, velocity, distance, direction, time, temp = [x.getValue()] }) => {
@@ -34,6 +39,7 @@ function ProjectRowContainer(props) {
 					  )
 					: clamp(temp[0] + delta[0] * (velocity < 1 ? 1 : velocity * 2), left, right)
 			});
+			toggleClick(!down);
 			return temp;
 		}
 	});
@@ -52,13 +58,14 @@ function ProjectRowContainer(props) {
 						: "none"
 				}}
 			>
-				<ProjectRow content={content} id={id} total={total} />
+				<ProjectRow content={content} id={id} total={total} clickEnabled={clickEnabled} />
 			</animated.div>
 			<style jsx global>{`
 				.slider {
 					width: 100%;
 					overflow-x: hidden;
 					overflow-y: hidden;
+					user-select: none;
 				}
 
 				.slider__wrapper {
@@ -73,11 +80,17 @@ function ProjectRowContainer(props) {
 				}
 
 				.slider li {
+					display: flex;
+					flex-wrap: nowrap;
 					padding: calc(var(--marginOuter) / 2);
 				}
 
 				.slider li figure {
 					position: relative;
+				}
+
+				.slider li figure:nth-child(2) {
+					margin-left: var(--marginOuter);
 				}
 
 				.slider img,
@@ -93,8 +106,10 @@ function ProjectRowContainer(props) {
 
 				@media screen and (min-width: 640px) {
 					.slider li figure {
-						padding: 0 calc(2rem - var(--marginOuter) / 2) 0 0;
-						background: red;
+						padding: 0 calc((var(--marginOuter) / 2 + 1rem + 1rem) * 1.5) 0 0;
+						 {
+							/* background: red; */
+						}
 					}
 
 					.slider ul {
@@ -106,13 +121,12 @@ function ProjectRowContainer(props) {
 					}
 
 					.slider li figure figcaption {
+						width: calc((var(--marginOuter) / 2 + 1rem + 1rem) * 1.5);
 						position: absolute;
 						top: 0;
-						left: 100%;
+						right: 0;
 						white-space: nowrap;
-						transform: rotate(-90deg) translate(-100%, -100%);
-						transform-origin: top left;
-						padding: 0.5rem 0 0 0;
+						padding: 0 0.5rem;
 					}
 				}
 			`}</style>

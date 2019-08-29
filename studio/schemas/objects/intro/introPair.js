@@ -8,6 +8,15 @@ export default {
 	icon: MdStar,
 	fields: [
 		{
+			title: 'Layout',
+			name: 'layout',
+			type: 'string',
+			options: {
+				list: ['Small & Large', 'Large & Small'],
+				layout: 'dropdown'
+			}
+		},
+		{
 			type: 'reference',
 			name: 'reference_left',
 			to: [{ type: 'stilllife' }, { type: 'commercial' }, { type: 'film' }]

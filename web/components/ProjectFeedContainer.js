@@ -18,7 +18,7 @@ class ProjectFeedContainer extends React.Component {
 		return (
 			<ProjectFeed
 				title={capitalize(this.props.type)}
-				slug={this.props.type}
+				type={this.props.type}
 				posts={this.state.posts}
 			/>
 		);

@@ -17,6 +17,7 @@ class Video extends React.Component {
 		if (!this.state.video) return <div>Loading...</div>;
 
 		const { playbackId, data } = this.state.video;
+		console.log(this.state.video);
 
 		if (this.props.gif) {
 			const width = parseInt(data.aspect_ratio.split(":")[0]),

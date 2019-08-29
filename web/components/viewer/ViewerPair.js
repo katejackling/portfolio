@@ -1,28 +1,36 @@
 import Media from "../../components/Media";
 
 function ViewerPair(props) {
-	// const { media = "", layout = "" } = props;
-	// console.log(media);
+	console.log(props);
+	const { media_left, media_right } = props,
+		asset_left =
+			media_left.type === "video" ? media_left.video.mux.asset : media_left.image.asset,
+		type_left = media_left.type,
+		asset_right =
+			media_right.type === "video" ? media_right.video.mux.asset : media_right.image.asset,
+		type_right = media_right.type;
+	return (
+		<figure className="pair">
+			<Media asset={asset_left} type={type_left} />
+			<Media asset={asset_right} type={type_right} />
 
-	// const asset = media.type === "video" ? media.video.mux.asset : media.image.asset,
-	// 	type = media.type,
-	// 	fit = layout;
-	// return (
-	// 	<figure className={fit}>
-	// 		<Media asset={asset} type={type} />
-	// 		<style jsx>{`
-	// 			:global(figure.contain img, figure.contain video) {
-	// 				object-fit: contain;
-	// 			}
-	// 			:global(figure.cover img, figure.cover video) {
-	// 				object-fit: cover;
-	// 			}
-	// 			@media screen and (min-width: 640px) {
-	// 			}
-	// 		`}</style>
-	// 	</figure>
-	// );
-	return <div>test pair</div>;
+			<style jsx global>{`
+				figure.pair {
+					display: flex;
+					flex-wrap: nowrap;
+					justify-content: center;
+					padding: calc(var(--marginOuter) / 2);
+				}
+				figure.pair img,
+				figure.pair video {
+					width: 100%;
+					height: 100%;
+					object-fit: contain;
+					padding: calc(var(--marginOuter) / 2);
+				}
+			`}</style>
+		</figure>
+	);
 }
 
 export default ViewerPair;
