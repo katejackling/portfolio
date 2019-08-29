@@ -15,6 +15,7 @@
 		"@sanity/block-content-to-react": "^2.0.6",
 		"@sanity/client": "^0.142.0",
 		"@sanity/image-url": "^0.140.12",
+		"@types/react": "^16.9.2",
 		"@zeit/next-css": "^1.0.1",
 		"flickity": "^2.2.1",
 		"groq": "^0.142.0",
@@ -23,7 +24,7 @@
 		"lazysizes": "^5.1.1",
 		"lodash": "^4.17.15",
 		"next": "^9.0.5",
-		"next-fonts": "^0.17.0",
+		"next-fonts": "^0.18.0",
 		"next-routes": "^1.4.2",
 		"next-seo": "^2.0.0",
 		"react": "^16.9.0",
@@ -44,6 +45,7 @@
 		"resize-observer-polyfill": "^1.5.1",
 		"sanity-mux-player": "0.0.26",
 		"styled-components": "^4.3.2",
+		"typescript": "^3.6.2",
 		"video.js": "^7.6.0"
 	},
 	"devDependencies": {
