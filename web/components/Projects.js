@@ -6,7 +6,7 @@ import ProjectViewerContainer from "../components/ProjectViewerContainer";
 
 function Projects(props) {
 	const { viewerOpen, viewerContent } = props;
-	console.log(viewerContent);
+
 	return (
 		<>
 			<ProjectFeedContainer type="stilllife" />

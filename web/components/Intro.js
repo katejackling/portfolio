@@ -15,7 +15,7 @@ function resolveSections(section) {
 
 function Intro(props) {
 	const { content, references } = props;
-	console.log(references);
+
 	if (!content) {
 		console.error("Missing section");
 		return <div>Missing content</div>;
@@ -32,7 +32,7 @@ function Intro(props) {
 					section._type === "introPair"
 						? [references.references_left[i], references.references_right[i]]
 						: references.references[i];
-				return <IntroSection {...section} reference={ref} key={section._key} />;
+				return <IntroSection {...section} reference={ref} key={section._key + i} />;
 			})}
 			<style jsx global>{`
 				#intro {
@@ -44,7 +44,7 @@ function Intro(props) {
 					position: relative;
 					width: 100%;
 				}
-				.intro__section figcaption {
+				.intro__section:not(.intro__section--text) figcaption {
 					position: absolute;
 					top: 0;
 					left: 100%;
@@ -55,7 +55,7 @@ function Intro(props) {
 				}
 
 				@media screen and (max-width: 639px) {
-					.intro__section figcaption {
+					.intro__section:not(.intro__section--text) figcaption {
 						display: none;
 					}
 				}

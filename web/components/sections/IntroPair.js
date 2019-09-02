@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Media from "../../components/Media";
+import { Link } from "react-scroll";
 
 function IntroPair(props) {
 	const { layout, reference, media_left, media_right } = props,
@@ -11,18 +11,40 @@ function IntroPair(props) {
 			media_right.type === "video" ? media_right.video.mux.asset : media_right.image.asset,
 		type_right = media_right.type;
 
-	console.log(props);
-
 	return (
 		<section className="intro__section intro__section--pair">
 			<figure>
-				<Media asset={asset_left} type={type_left} />
-				<figcaption>{reference[0] && reference[0].title}</figcaption>
+				<Link to={reference[0] && reference[0]._id} spy={true} smooth={true} duration={500}>
+					<Media asset={asset_left} type={type_left} />
+				</Link>
+				<figcaption>
+					<Link
+						to={reference[0] && reference[0]._id}
+						spy={true}
+						smooth={true}
+						duration={500}
+					>
+						{reference[0] && reference[0].title}
+					</Link>
+				</figcaption>
 			</figure>
+
 			<figure>
-				<Media asset={asset_right} type={type_right} />
-				<figcaption>{reference[1] && reference[1].title}</figcaption>
+				<Link to={reference[1] && reference[1]._id} spy={true} smooth={true} duration={500}>
+					<Media asset={asset_right} type={type_right} />
+				</Link>
+				<figcaption>
+					<Link
+						to={reference[1] && reference[1]._id}
+						spy={true}
+						smooth={true}
+						duration={500}
+					>
+						{reference[1] && reference[1].title}
+					</Link>
+				</figcaption>
 			</figure>
+
 			<style jsx global>{`
 				@media screen and (min-width: 640px) {
 					.intro__section.intro__section--pair {
@@ -36,7 +58,7 @@ function IntroPair(props) {
 						width: 50%;
 						padding: 0 calc(var(--marginOuter) / 2 + 1rem + 1rem) 0
 							calc(var(--marginOuter) / 2);
-						background: red;
+						align-self: flex-start;
 					}
 				}
 			`}</style>

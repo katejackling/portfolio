@@ -6,8 +6,6 @@ import ProjectGridContainer from "./ProjectGridContainer";
 function ProjectFeed(props) {
 	const { posts, title = "", type = "" } = props;
 
-	console.log(type);
-
 	return (
 		<article id={type} className={type !== "film" ? "projects row" : "projects grid"}>
 			<h2>{title}</h2>
@@ -21,7 +19,7 @@ function ProjectFeed(props) {
 
 					return (
 						slug && (
-							<li key={_id} className="project">
+							<li key={_id} className="project" id={_id}>
 								<h3>{title}</h3>
 								{type !== "film" ? (
 									<ProjectRowContainer content={content} id={_id} total={total} />
@@ -74,20 +72,24 @@ function ProjectFeed(props) {
 
 				.grid li figure {
 					position: relative;
-					width: 100%;
+					display: inline-block;
 				}
 
-				.grid img,
 				.grid video {
-					pointer-events: none;
-					object-fit: contain;
-					object-position: top left;
-					height: 100%;
+					cursor: pointer;
+					-moz-user-select: none;
+					-webkit-user-select: none;
+					-ms-user-select: none;
 					user-select: none;
+					-webkit-user-drag: none;
+					user-drag: none;
+					-webkit-touch-callout: none;
 				}
 
 				@media screen and (max-width: 639px) {
-					.grid li {
+					.grid li,
+					.grid figure,
+					.grid video {
 						width: 100%;
 					}
 				}
@@ -101,8 +103,9 @@ function ProjectFeed(props) {
 					.grid li {
 						width: 50%;
 					}
-					.grid li video {
-						max-height: 20rem;
+					.grid video {
+						width: calc(20rem * var(--ratio));
+						max-width: calc((100vw - 3 * var(--marginOuter)) / 2);
 					}
 				}
 			`}</style>

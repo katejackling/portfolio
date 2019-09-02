@@ -2,12 +2,11 @@ import Img from "./Img";
 import Video from "./Video";
 
 function Media(props) {
-	const { asset = "", type = "", fit = null, gif = false } = props;
-
+	const { media, asset = "", type = "", fit = null, gif = false } = props;
 	if (type === "image") {
-		return <Img asset={asset} fit={fit && fit} />;
+		return <Img asset={asset} />;
 	} else {
-		return <Video asset={asset} fit={fit && fit} gif={gif} />;
+		return <Video asset={asset} gif={gif} controls={media && media.video.videoControls} />;
 	}
 }
 

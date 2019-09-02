@@ -25,6 +25,7 @@ import intro100 from './objects/intro/intro100'
 import intro50 from './objects/intro/intro50'
 import intro75 from './objects/intro/intro75'
 import introPair from './objects/intro/introPair'
+import introText from './objects/intro/introText'
 
 // Viewer sections
 import viewerContain from './objects/viewer/viewerSingleContain'
@@ -46,6 +47,7 @@ export default createSchema({
 		intro50,
 		intro75,
 		introPair,
+		introText,
 		internalLink,
 		link,
 		media,

@@ -2,7 +2,6 @@ import Media from "./Media";
 
 function ProjectRowItem(props) {
 	const { media, rowIndex, total } = props;
-	console.log(media);
 
 	return (
 		<figure>

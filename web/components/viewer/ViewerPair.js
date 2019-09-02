@@ -11,24 +11,8 @@ function ViewerPair(props) {
 		type_right = media_right.type;
 	return (
 		<figure className="pair">
-			<Media asset={asset_left} type={type_left} />
-			<Media asset={asset_right} type={type_right} />
-
-			<style jsx global>{`
-				figure.pair {
-					display: flex;
-					flex-wrap: nowrap;
-					justify-content: center;
-					padding: calc(var(--marginOuter) / 2);
-				}
-				figure.pair img,
-				figure.pair video {
-					width: 100%;
-					height: 100%;
-					object-fit: contain;
-					padding: calc(var(--marginOuter) / 2);
-				}
-			`}</style>
+			<Media media={media_left} asset={asset_left} type={type_left} />
+			<Media media={media_right} asset={asset_right} type={type_right} />
 		</figure>
 	);
 }

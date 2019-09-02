@@ -7,7 +7,7 @@ function ViewerCover(props) {
 		fit = _type.replace("viewer", "").toLowerCase();
 	return (
 		<figure className={fit}>
-			<Media asset={asset} type={type} fit={fit} />
+			<Media media={media} asset={asset} type={type} fit={fit} />
 			<style jsx>{`
 				:global(figure.cover img, figure.cover video) {
 					object-fit: cover;

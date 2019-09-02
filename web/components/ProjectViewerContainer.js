@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { throws } from "assert";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -91,9 +91,9 @@ function ProjectViewerContainer(props) {
 						left: 0;
 						width: 100%;
 						height: calc(100 * var(--vH));
-						z-index: 8;
+						z-index: 9;
 						user-select: none;
-						cursor: pointer !important;
+						cursor: grab;
 					}
 					.project__viewer:active {
 						cursor: grabbing !important;
@@ -106,6 +106,7 @@ function ProjectViewerContainer(props) {
 						left: 0;
 						bottom: 0;
 						right: 0;
+						z-index: 8;
 						background: white;
 					}
 
@@ -136,18 +137,103 @@ function ProjectViewerContainer(props) {
 						z-index: -1;
 					}
 
-					.project__viewer figure,
-					.project__viewer img,
-					.project__viewer .player__wrapper,
-					.project__viewer video {
+					.project__viewer figure {
 						width: 100%;
 						height: 100%;
-						pointer-events: none;
+						position: relative;
+					}
+
+					.project__viewer figure:not(.pair) img,
+					.project__viewer figure:not(.pair) .player__wrapper {
+						position: absolute;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						cursor: pointer;
+					}
+
+					[data-orientation="portrait"] video {
+						width: auto;
+						height: 100%;
+					}
+
+					[data-orientation="landscape"] video {
+						width: 100%;
+						height: auto;
+					}
+
+					.project__viewer img,
+					.project__viewer video {
+						-moz-user-select: none;
+						-webkit-user-select: none;
+						-ms-user-select: none;
+						user-select: none;
+						-webkit-user-drag: none;
+						user-drag: none;
+						-webkit-touch-callout: none;
+					}
+
+					.project__viewer figure.contain {
+						max-width: 100vmin;
+						margin: 0 auto;
+					}
+
+					.project__viewer figure.contain [data-orientation="landscape"] {
+						width: 100%;
+						height: auto;
+						padding: var(--headerH) 0;
+					}
+
+					.project__viewer figure.contain [data-orientation="portrait"] {
+						width: auto;
+						height: 100%;
+						padding: var(--headerH) 3rem;
+					}
+
+					.project__viewer figure.cover [data-orientation="landscape"] {
+						width: auto;
+						height: 100%;
+					}
+
+					.project__viewer figure.cover [data-orientation="portrait"] {
+						width: 100%;
+						height: auto;
+					}
+
+					.project__viewer figure.cover [data-orientation="portrait"],
+					.project__viewer figure.cover [data-orientation="landscape"],
+					.project__viewer figure.cover img,
+					.project__viewer figure.cover video {
+						width: 100%;
+						height: 100%;
+					}
+
+					figure.pair {
+						max-width: calc(100vmin - 3rem + var(--marginOuter) / 2);
+						display: flex;
+						flex-wrap: nowrap;
+						justify-content: center;
+						padding: calc(var(--headerH) - var(--marginOuter) / 2)
+							calc(var(--marginOuter) / 2);
+						margin: 0 auto;
+					}
+					figure.pair img,
+					figure.pair video {
+						width: 50%;
+						height: 100%;
+						object-fit: contain;
+						padding: calc(var(--marginOuter) / 2);
 					}
 
 					@media screen and (max-width: 639px) {
 						.project__viewer__caption {
 							text-align: center;
+						}
+					}
+
+					@media screen and (min-width: 640px) {
+						.project__viewer figure.contain [data-orientation="landscape"] {
+							padding: var(--headerH) 3rem;
 						}
 					}
 				`}</style>

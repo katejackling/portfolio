@@ -1,26 +1,17 @@
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { toggleNav } from "../utils/redux/actions";
-import useMeasure from "../utils/hooks/useMeasure";
-import useDimensions from "react-use-dimensions";
+// import useDimensions from "react-use-dimensions";
+import useDimensions from "../utils/hooks/useDimensions";
 
 import { useSpring, animated, interpolate, config } from "react-spring";
-import {
-	Link,
-	DirectLink,
-	Element,
-	Events,
-	animateScroll as scroll,
-	scrollSpy,
-	scroller
-} from "react-scroll";
+import { Link } from "react-scroll";
 
 function Header(props) {
 	const { toggleNav, navOpen } = props,
 		[headerRef, headerSize] = useDimensions(),
 		offsetHeader = headerSize.height * -1;
-	console.log(headerSize);
 
 	return (
 		<header ref={headerRef} data-nav-active={navOpen}>
@@ -82,6 +73,10 @@ function Header(props) {
 					width: 100%;
 					padding: var(--marginOuter);
 					z-index: 99;
+				}
+
+				header a {
+					display: inline;
 				}
 
 				nav ul li {

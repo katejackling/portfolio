@@ -3,7 +3,7 @@ import React from 'react'
 export default {
 	name: 'viewerCover',
 	type: 'object',
-	title: 'Single Cover',
+	title: 'Single Fullbleed',
 	fields: [{ title: 'Media', name: 'media', type: 'media' }],
 	preview: {
 		select: {

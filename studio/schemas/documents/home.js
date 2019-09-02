@@ -19,7 +19,8 @@ export default {
 				{ type: 'intro100' },
 				{ type: 'intro75' },
 				{ type: 'intro50' },
-				{ type: 'introPair' }
+				{ type: 'introPair' },
+				{ type: 'introText' }
 			]
 			// options: {
 			// 	editModal: 'fullscreen'

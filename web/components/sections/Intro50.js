@@ -1,4 +1,5 @@
 import Media from "../../components/Media";
+import { Link } from "react-scroll";
 
 function Intro50(props) {
 	const { media = "", reference = "", layout = "", text } = props;
@@ -8,8 +9,14 @@ function Intro50(props) {
 	return (
 		<section className="intro__section intro__section--50">
 			<figure>
-				<Media asset={asset} type={type} />
-				<figcaption>{reference && reference.title}</figcaption>
+				<Link to={reference && reference._id} spy={true} smooth={true} duration={500}>
+					<Media asset={asset} type={type} />
+				</Link>
+				<figcaption>
+					<Link to={reference && reference._id} spy={true} smooth={true} duration={500}>
+						{reference && reference.title}
+					</Link>
+				</figcaption>
 			</figure>
 
 			<style jsx global>{`
@@ -53,7 +60,6 @@ function Intro50(props) {
 						width: 50%;
 						padding: 0 calc(var(--marginOuter) / 2 + 1rem + 1rem) 0
 							calc(var(--marginOuter) / 2);
-						background: red;
 					}
 					.intro__section--50::after {
 						padding: var(--marginMedium);

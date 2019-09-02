@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setSlide } from "../utils/redux/actions";

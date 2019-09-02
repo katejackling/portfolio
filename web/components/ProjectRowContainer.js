@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { withRouter } from "next/router";
 import useMeasure from "../utils/hooks/useMeasure";
 import useWindowSize from "../utils/hooks/useWindowSize";
@@ -95,10 +95,16 @@ function ProjectRowContainer(props) {
 
 				.slider img,
 				.slider video {
-					pointer-events: none;
+					cursor: pointer;
+					-moz-user-select: none;
+					-webkit-user-select: none;
+					-ms-user-select: none;
+					user-select: none;
+					-webkit-user-drag: none;
+					user-drag: none;
+					-webkit-touch-callout: none;
 					height: 10rem !important;
 					width: auto !important;
-					user-select: none;
 				}
 
 				@media screen and (max-width: 639px) {

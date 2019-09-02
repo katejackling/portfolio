@@ -3,11 +3,14 @@ import ProjectFeed from "../components/ProjectFeed";
 import { capitalize } from "../scripts/utils";
 
 class ProjectFeedContainer extends React.Component {
-	// state = { posts: [] };
+	state = { posts: [] };
 
 	componentDidMount() {
-		return client.fetch(`*[_type == "${this.props.type}"]`).then(posts => {
-			this.setState({ posts: posts });
+		const type = this.props.type;
+		return client.fetch(`*[_type=="home"][0]{${type}[]->}`).then(posts => {
+			this.setState({
+				posts: posts[type]
+			});
 		});
 	}
 
