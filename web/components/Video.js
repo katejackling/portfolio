@@ -57,7 +57,7 @@ class Video extends React.Component {
 					playsinline={!controls}
 					playing={playing}
 					loop
-					muted={controls}
+					muted={!controls}
 					className="player__wrapper"
 					config={{
 						file: {

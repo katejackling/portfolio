@@ -37,16 +37,11 @@ function ProjectRow(props) {
 								total={total}
 							/>
 						)}
-						{media_right && (
-							<ProjectRowItem
-								media={media_right}
-								rowIndex={rowIndex + 1}
-								total={total}
-							/>
+						{media_right && rowIndex++ && (
+							<ProjectRowItem media={media_right} rowIndex={rowIndex} total={total} />
 						)}
 					</li>
 				);
-				media_right && rowIndex++;
 			})}
 		</ul>
 	);
