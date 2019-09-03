@@ -1,14 +1,13 @@
-import { useState, useRef } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { setSlide } from "../utils/redux/actions";
+import { useState, useRef, useGlobal } from "reactn";
+
 import useWindowSize from "../utils/hooks/useWindowSize";
 import { capitalize } from "../scripts/utils";
 
 import * as ViewerSections from "./viewer";
 
 function ProjectViewer(props) {
-	const { content, clickEnabled, slideIndex, setSlide } = props;
+	const { content, clickEnabled } = props,
+		[slideIndex, setSlide] = useGlobal("slideIndex");
 
 	let resolveSections = section => {
 		// eslint-disable-next-line import/namespace
@@ -20,7 +19,7 @@ function ProjectViewer(props) {
 		return null;
 	};
 
-	console.log(props);
+	console.log(slideIndex);
 
 	return (
 		<ul>
@@ -33,7 +32,6 @@ function ProjectViewer(props) {
 					<li
 						key={section._key}
 						className={slideIndex === i ? "visible" : "hidden"}
-						//style={{ pointerEvents: clickEnabled ? "auto" : "none" }}
 						onMouseUp={() => {
 							console.log(i);
 
@@ -50,13 +48,4 @@ function ProjectViewer(props) {
 	);
 }
 
-const mapStateToProps = state => ({
-	slideIndex: state.viewer.slideIndex
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({ setSlide }, dispatch);
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ProjectViewer);
+export default ProjectViewer;

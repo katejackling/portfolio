@@ -1,17 +1,23 @@
-import { useState, useRef } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { toggleNav } from "../utils/redux/actions";
-// import useDimensions from "react-use-dimensions";
+import { useState, useRef, useGlobal } from "reactn";
 import useDimensions from "../utils/hooks/useDimensions";
 
 import { useSpring, animated, interpolate, config } from "react-spring";
-import { Link } from "react-scroll";
+import * as Scroll from "react-scroll";
 
 function Header(props) {
-	const { toggleNav, navOpen } = props,
-		[headerRef, headerSize] = useDimensions(),
-		offsetHeader = headerSize.height * -1;
+	const [headerRef, headerDimensions] = useDimensions({ global: "headerSize" }),
+		[headerSize] = useGlobal("headerSize"),
+		[navOpen, toggleNav] = useGlobal("navOpen");
+	let Link = Scroll.Link;
+	let Element = Scroll.Element;
+	let Events = Scroll.Events;
+
+	Events.scrollEvent.register("begin", function(to, element) {
+		console.log("begin", to, element);
+		navOpen && toggleNav(false);
+	});
+
+	let offsetHeader = headerSize && headerSize.height * -1;
 
 	return (
 		<header ref={headerRef} data-nav-active={navOpen}>
@@ -131,13 +137,4 @@ function Header(props) {
 	);
 }
 
-const mapStateToProps = state => ({
-	navOpen: state.nav.navOpen
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({ toggleNav }, dispatch);
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Header);
+export default Header;

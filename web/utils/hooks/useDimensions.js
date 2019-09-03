@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, setGlobal } from "reactn";
 // import { DimensionObject, UseDimensionsArgs, UseDimensionsHook } from "./types";
 
 function getDimensionObject(node) {
@@ -16,7 +16,7 @@ function getDimensionObject(node) {
 	};
 }
 
-function useDimensions() {
+function useDimensions(global) {
 	const [dimensions, setDimensions] = useState({});
 	const [node, setNode] = useState(null);
 
@@ -26,8 +26,13 @@ function useDimensions() {
 
 	useEffect(() => {
 		if (node) {
-			const measure = () =>
+			const measure = () => {
 				window.requestAnimationFrame(() => setDimensions(getDimensionObject(node)));
+				let globalObj = { [global.global]: getDimensionObject(node) };
+				console.log(getDimensionObject(node), global.global, globalObj);
+				setGlobal(globalObj);
+			};
+
 			measure();
 
 			window.addEventListener("resize", measure);

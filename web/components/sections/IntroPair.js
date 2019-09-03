@@ -1,3 +1,5 @@
+import { useGlobal } from "reactn";
+
 import Media from "../../components/Media";
 import { Link } from "react-scroll";
 
@@ -9,12 +11,21 @@ function IntroPair(props) {
 		type_left = media_left.type,
 		asset_right =
 			media_right.type === "video" ? media_right.video.mux.asset : media_right.image.asset,
-		type_right = media_right.type;
+		type_right = media_right.type,
+		[headerSize, setHeaderHeight] = useGlobal("headerSize");
+
+	let offsetHeader = headerSize && headerSize.height * -1;
 
 	return (
 		<section className="intro__section intro__section--pair">
 			<figure>
-				<Link to={reference[0] && reference[0]._id} spy={true} smooth={true} duration={500}>
+				<Link
+					to={reference[0] && reference[0]._id}
+					spy={true}
+					smooth={true}
+					duration={500}
+					offset={offsetHeader}
+				>
 					<Media asset={asset_left} type={type_left} />
 				</Link>
 				<figcaption>
@@ -23,6 +34,7 @@ function IntroPair(props) {
 						spy={true}
 						smooth={true}
 						duration={500}
+						offset={offsetHeader}
 					>
 						{reference[0] && reference[0].title}
 					</Link>
@@ -30,7 +42,13 @@ function IntroPair(props) {
 			</figure>
 
 			<figure>
-				<Link to={reference[1] && reference[1]._id} spy={true} smooth={true} duration={500}>
+				<Link
+					to={reference[1] && reference[1]._id}
+					spy={true}
+					smooth={true}
+					duration={500}
+					offset={offsetHeader}
+				>
 					<Media asset={asset_right} type={type_right} />
 				</Link>
 				<figcaption>
@@ -39,6 +57,7 @@ function IntroPair(props) {
 						spy={true}
 						smooth={true}
 						duration={500}
+						offset={offsetHeader}
 					>
 						{reference[1] && reference[1].title}
 					</Link>

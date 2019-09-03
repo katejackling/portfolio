@@ -1,8 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useDispatch, useGlobal } from "reactn";
 import { throws } from "assert";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { setSlide, resetViewer } from "../utils/redux/actions";
+
 import useWindowSize from "../utils/hooks/useWindowSize";
 import { capitalize } from "../scripts/utils";
 import { useSpring, animated, interpolate, config } from "react-spring";
@@ -13,11 +11,19 @@ import useLockBodyScroll from "../utils/hooks/useLockBodyScroll";
 import ProjectViewer from "./ProjectViewer";
 
 function ProjectViewerContainer(props) {
-	const { viewerContent, id, viewerOpen, viewerID, slideIndex, setSlide, resetViewer } = props;
 	const [clickEnabled, toggleClick] = useState(false);
 	const windowSize = useWindowSize();
+	const [viewerOpen] = useGlobal("viewerOpen");
+	const [viewerContent] = useGlobal("viewerContent");
 
 	if (!viewerContent) return <h1>Loading</h1>;
+
+	const resetViewerReducer = (global, dispatch, action) => ({
+		viewerOpen: false,
+		viewerID: null,
+		slideIndex: 0
+	});
+	const resetViewer = useDispatch(resetViewerReducer);
 
 	const [{ y }, set] = useSpring(() => ({
 		y: 0,
@@ -29,7 +35,6 @@ function ProjectViewerContainer(props) {
 			}
 			if (Math.abs(y) >= windowSize.height / 4) {
 				resetViewer();
-				//toggleClick(true);
 			}
 		},
 		onRest: function() {
@@ -242,16 +247,4 @@ function ProjectViewerContainer(props) {
 	);
 }
 
-const mapStateToProps = state => ({
-	viewerOpen: state.viewer.viewerOpen,
-	viewerContent: state.viewer.viewerContent,
-	viewerID: state.viewer.viewerID,
-	slideIndex: state.viewer.slideIndex
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({ setSlide, resetViewer }, dispatch);
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ProjectViewerContainer);
+export default ProjectViewerContainer;

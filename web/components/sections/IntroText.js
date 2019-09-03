@@ -1,3 +1,5 @@
+import { useGlobal } from "reactn";
+
 import { Link } from "react-scroll";
 
 import Media from "../../components/Media";
@@ -5,11 +7,20 @@ import Block from "../../components/Block";
 
 function IntroText(props) {
 	const { reference = "", text } = props,
-		content = reference.content;
+		content = reference.content,
+		[headerSize, setHeaderHeight] = useGlobal("headerSize");
+
+	let offsetHeader = headerSize && headerSize.height * -1;
 
 	return (
 		<section className="intro__section intro__section--text">
-			<Link to={reference && reference._id} spy={true} smooth={true} duration={500}>
+			<Link
+				to={reference && reference._id}
+				spy={true}
+				smooth={true}
+				duration={500}
+				offset={offsetHeader}
+			>
 				<figure>
 					<figcaption>
 						<Block blocks={text} />
@@ -52,6 +63,10 @@ function IntroText(props) {
 					padding: 0 calc(var(--marginOuter) / 2);
 				}
 
+				.intro__section--text:not(:first-child) {
+					padding-top: var(--marginMedium);
+				}
+
 				.intro__section--text figure {
 					display: flex;
 					flex-wrap: wrap;
@@ -69,13 +84,25 @@ function IntroText(props) {
 				.intro__section--text img,
 				.intro__section--text video {
 					width: auto;
-					height: calc(10rem + var(--marginOuter));
+					height: calc(
+						(104px + (160 - 104) * (100vw - 360px) / (640 - 360)) + var(--marginOuter)
+					);
+					 {
+						/* height: calc(10rem + var(--marginOuter)); */
+					}
 					padding: calc(var(--marginOuter) / 2);
 				}
 
 				@media screen and (max-width: 639px) {
+					.intro__section--text {
+						min-height: calc(100 * var(--vH));
+					}
 				}
 				@media screen and (min-width: 640px) {
+					.intro__section--text img,
+					.intro__section--text video {
+						height: calc(10rem + var(--marginOuter));
+					}
 				}
 			`}</style>
 		</section>

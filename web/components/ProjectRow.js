@@ -1,13 +1,23 @@
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-
-import { enableViewer } from "../utils/redux/actions";
+import { setGlobal } from "reactn";
 import client from "../client";
-
 import ProjectRowItem from "../components/ProjectRowItem";
 
 function ProjectRow(props) {
-	const { content, id, total, viewerOpen, enableViewer, slideIndex, clickEnabled } = props;
+	const { content, id, total, clickEnabled } = props;
+
+	const enableViewer = (viewerID, slideIndex) => {
+		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
+			const content = res[0].content;
+			console.log(viewerID, slideIndex, content);
+			setGlobal({
+				viewerOpen: true,
+				viewerContent: content,
+				viewerID,
+				slideIndex
+			});
+		});
+	};
+
 	let rowIndex = 0;
 	return (
 		<ul>
@@ -42,15 +52,4 @@ function ProjectRow(props) {
 	);
 }
 
-const mapStateToProps = state => ({
-	viewerOpen: state.viewer.viewerOpen,
-	viewerID: state.viewer.viewerID,
-	slideIndex: state.viewer.slideIndex
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({ enableViewer }, dispatch);
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ProjectRow);
+export default ProjectRow;

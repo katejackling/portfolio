@@ -1,13 +1,21 @@
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-
-import { enableViewer } from "../utils/redux/actions";
-
+import { setGlobal } from "reactn";
 import Media from "./Media";
+import client from "../client";
 
 function ProjectGridContainer(props) {
-	const { content, mediaFeatured, id, total, viewerOpen, enableViewer, slideIndex } = props;
-
+	const { mediaFeatured, id } = props;
+	const enableViewer = (viewerID, slideIndex) => {
+		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
+			const content = res[0].content;
+			console.log(viewerID, slideIndex, content);
+			setGlobal({
+				viewerOpen: true,
+				viewerContent: content,
+				viewerID,
+				slideIndex
+			});
+		});
+	};
 	return (
 		<figure
 			onClick={() => {
@@ -19,15 +27,4 @@ function ProjectGridContainer(props) {
 	);
 }
 
-const mapStateToProps = state => ({
-	viewerOpen: state.viewer.viewerOpen,
-	viewerID: state.viewer.viewerID,
-	slideIndex: state.viewer.slideIndex
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({ enableViewer }, dispatch);
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ProjectGridContainer);
+export default ProjectGridContainer;
