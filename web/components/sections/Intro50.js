@@ -48,13 +48,18 @@ function Intro50(props) {
 					left: 50%;
 					width: 100%;
 					transform: translate(-50%, -50%);
-					font-size: calc(48px + (180 - 48) * (100vw - 360px) / (1920 - 360));
-					line-height: calc(52px + (155 - 52) * (100vw - 360px) / (1920 - 360));
+					font-size: calc(48px + (180 - 60) * (100vw - 360px) / (1920 - 360));
+					line-height: calc(52px + (155 - 60) * (100vw - 360px) / (1920 - 360));
 					padding: var(--marginOuter);
 					text-align: center;
 					mix-blend-mode: difference;
 					color: white;
 					z-index: 7;
+					pointer-events: none;
+				}
+
+				.intro__section--50 figcaption {
+					padding: 0.5rem 0;
 				}
 
 				@media screen and (max-width: 639px) {

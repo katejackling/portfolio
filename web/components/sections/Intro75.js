@@ -37,6 +37,10 @@ function Intro75(props) {
 			</figure>
 
 			<style jsx global>{`
+				.intro__section--75 figcaption {
+					padding: 0.5rem 0;
+				}
+
 				@media screen and (min-width: 640px) {
 					.intro__section.intro__section--75 {
 						display: flex;

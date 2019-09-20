@@ -11,14 +11,18 @@ import useLockBodyScroll from "../utils/hooks/useLockBodyScroll";
 import ProjectViewer from "./ProjectViewer";
 
 function ProjectViewerContainer(props) {
-	const [clickEnabled, toggleClick] = useState(false);
-	const windowSize = useWindowSize();
-	const [viewerOpen] = useGlobal("viewerOpen");
-	const [viewerContent] = useGlobal("viewerContent");
+	const [clickEnabled, toggleClick] = useState(false),
+		windowSize = useWindowSize(),
+		[viewerTitle] = useGlobal("viewerTitle"),
+		[viewerOpen] = useGlobal("viewerOpen"),
+		[viewerContent] = useGlobal("viewerContent");
+
+	console.log(viewerContent);
 
 	if (!viewerContent) return <h1>Loading</h1>;
 
 	const resetViewerReducer = (global, dispatch, action) => ({
+		viewerTitle: false,
 		viewerOpen: false,
 		viewerID: null,
 		slideIndex: 0
@@ -75,7 +79,7 @@ function ProjectViewerContainer(props) {
 					)
 				}}
 			>
-				<h2 className="project__viewer__caption">Test</h2>
+				<h2 className="project__viewer__caption">{viewerTitle}</h2>
 			</animated.div>
 			<animated.section
 				className="project__viewer"

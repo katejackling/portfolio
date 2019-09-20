@@ -30,9 +30,9 @@ export default {
 			title: 'Clients'
 		},
 		{
-			name: 'legal',
+			name: 'legal_notice',
 			type: 'portableText',
-			title: 'Legal'
+			title: 'Legal Notice'
 		}
 	],
 

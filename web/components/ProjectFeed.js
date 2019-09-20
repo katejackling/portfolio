@@ -1,13 +1,28 @@
 import client from "../client";
 import Link from "next/link";
+import { useGlobal, useRef, useEffect } from "reactn";
+import { useInView } from "react-intersection-observer";
+
 import ProjectRowContainer from "./ProjectRowContainer";
 import ProjectGridContainer from "./ProjectGridContainer";
 
 function ProjectFeed(props) {
-	const { posts, title = "", type = "" } = props;
+	const { posts, title = "", type = "" } = props,
+		[ref, inView, entry] = useInView({
+			/* Optional options */
+			rootMargin: "-50%"
+		}),
+		[sectionActive, setSection] = useGlobal("sectionActive");
+
+	useEffect(() => {
+		if (inView && sectionActive !== type) {
+			setSection(type);
+		}
+		return undefined;
+	}, [inView]);
 
 	return (
-		<article id={type} className={type !== "film" ? "projects row" : "projects grid"}>
+		<article ref={ref} id={type} className={type !== "film" ? "projects row" : "projects grid"}>
 			<h2>{title}</h2>
 			<ul>
 				{posts.map(({ _id, title = "", slug = "", content = [], mediaFeatured }) => {
@@ -37,7 +52,9 @@ function ProjectFeed(props) {
 				})}
 			</ul>
 			<style jsx global>{`
-				.projects:not(:last-child),
+				.projects:not(:last-child) {
+					padding-bottom: 15rem;
+				}
 				.project:not(:last-child) {
 					margin-bottom: var(--marginMedium);
 				}

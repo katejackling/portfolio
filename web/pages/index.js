@@ -18,11 +18,13 @@ import "../styles/main.css";
 
 setGlobal({
 	navOpen: false,
+	viewerTitle: false,
 	viewerOpen: false,
 	viewerContent: null,
 	viewerID: null,
 	slideIndex: 0,
-	headerHeight: 0
+	headerHeight: 0,
+	sectionActive: false
 });
 
 class Index extends React.Component {

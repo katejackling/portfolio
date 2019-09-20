@@ -34,8 +34,6 @@ export default {
 		},
 		prepare(selection) {
 			const { title, media, playbackId, imageURL } = selection
-
-			console.log(playbackId)
 			let mediaPreview
 			if (media && media.type === 'video') {
 				let url = `https://image.mux.com/${playbackId}/animated.gif?end=2.5&width=200&height=200&fit_mode=pad&time=0`

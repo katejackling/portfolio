@@ -103,7 +103,7 @@ function ProjectRowContainer(props) {
 					-webkit-user-drag: none;
 					user-drag: none;
 					-webkit-touch-callout: none;
-					height: 10rem !important;
+					height: 7.5rem !important;
 					width: auto !important;
 				}
 

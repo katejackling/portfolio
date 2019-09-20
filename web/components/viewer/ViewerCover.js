@@ -8,11 +8,26 @@ function ViewerCover(props) {
 	return (
 		<figure className={fit}>
 			<Media media={media} asset={asset} type={type} fit={fit} />
-			<style jsx>{`
-				:global(figure.cover img, figure.cover video) {
-					object-fit: cover;
+			<style jsx global>{`
+				@media screen and (max-width: 639px) {
+					figure.cover {
+						display: flex;
+						justify-content: center;
+						align-content: center;
+					}
+
+					figure.cover img,
+					figure.cover video {
+						width: 100vmin;
+						height: 100vmin;
+						object-fit: contain;
+					}
 				}
 				@media screen and (min-width: 640px) {
+					figure.cover img,
+					figure.cover video {
+						object-fit: cover;
+					}
 				}
 			`}</style>
 		</figure>

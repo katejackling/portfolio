@@ -1,4 +1,5 @@
 import { useState, useRef, useGlobal } from "reactn";
+
 import useDimensions from "../utils/hooks/useDimensions";
 
 import { useSpring, animated, interpolate, config } from "react-spring";
@@ -7,7 +8,9 @@ import * as Scroll from "react-scroll";
 function Header(props) {
 	const [headerRef, headerDimensions] = useDimensions({ global: "headerSize" }),
 		[headerSize] = useGlobal("headerSize"),
-		[navOpen, toggleNav] = useGlobal("navOpen");
+		[navOpen, toggleNav] = useGlobal("navOpen"),
+		[sectionActive, setSection] = useGlobal("sectionActive");
+
 	let Link = Scroll.Link;
 	let Element = Scroll.Element;
 	let Events = Scroll.Events;
@@ -24,8 +27,8 @@ function Header(props) {
 			<h1>Kate Jackling</h1>
 			<button onClick={() => toggleNav(!navOpen)}>{navOpen ? "Close" : "Menu"}</button>
 			<nav>
-				<ul>
-					<li>
+				<ul className={sectionActive ? "sections--active" : ""}>
+					<li className={sectionActive === "stilllife" ? "section--active" : ""}>
 						<Link
 							to="stilllife"
 							offset={offsetHeader}
@@ -36,7 +39,7 @@ function Header(props) {
 							Stilllife
 						</Link>
 					</li>
-					<li>
+					<li className={sectionActive === "commercial" ? "section--active" : ""}>
 						<Link
 							to="commercial"
 							offset={offsetHeader}
@@ -47,7 +50,7 @@ function Header(props) {
 							Commercial
 						</Link>
 					</li>
-					<li>
+					<li className={sectionActive === "film" ? "section--active" : ""}>
 						<Link
 							to="film"
 							offset={offsetHeader}
@@ -58,7 +61,7 @@ function Header(props) {
 							Film
 						</Link>
 					</li>
-					<li>
+					<li className={sectionActive === "info" ? "section--active" : ""}>
 						<Link
 							to="info"
 							offset={offsetHeader}
@@ -125,6 +128,10 @@ function Header(props) {
 
 					nav ul {
 						display: flex;
+					}
+
+					nav ul.sections--active li:not(.section--active) {
+						color: rgba(0, 0, 0, 0.5);
 					}
 
 					nav ul li:not(:last-child)::after {

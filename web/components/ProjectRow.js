@@ -7,9 +7,12 @@ function ProjectRow(props) {
 
 	const enableViewer = (viewerID, slideIndex) => {
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
+			console.log(res[0]);
+			const title = res[0].title;
 			const content = res[0].content;
 			console.log(viewerID, slideIndex, content);
 			setGlobal({
+				viewerTitle: title,
 				viewerOpen: true,
 				viewerContent: content,
 				viewerID,
@@ -24,23 +27,35 @@ function ProjectRow(props) {
 			{content.map(({ _type, media, media_left, media_right }, i) => {
 				rowIndex++;
 				return (
-					<li
-						key={rowIndex}
-						onMouseUp={() => {
-							clickEnabled && enableViewer(id, i);
-						}}
-					>
+					<React.Fragment key={rowIndex}>
 						{(media_left || media) && (
-							<ProjectRowItem
-								media={media ? media : media_left}
-								rowIndex={rowIndex}
-								total={total}
-							/>
+							<li
+								onMouseUp={() => {
+									clickEnabled && enableViewer(id, i);
+								}}
+							>
+								<ProjectRowItem
+									media={media ? media : media_left}
+									rowIndex={rowIndex}
+									total={total}
+								/>
+							</li>
 						)}
 						{media_right && rowIndex++ && (
-							<ProjectRowItem media={media_right} rowIndex={rowIndex} total={total} />
+							<li
+								key={rowIndex + media_right}
+								onMouseUp={() => {
+									clickEnabled && enableViewer(id, i);
+								}}
+							>
+								<ProjectRowItem
+									media={media_right}
+									rowIndex={rowIndex}
+									total={total}
+								/>
+							</li>
 						)}
-					</li>
+					</React.Fragment>
 				);
 			})}
 		</ul>

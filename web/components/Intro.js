@@ -1,5 +1,7 @@
 import { capitalize } from "../scripts/utils";
 import * as IntroSections from "./sections";
+import { useGlobal, useRef, useEffect } from "reactn";
+import { useInView } from "react-intersection-observer";
 
 function resolveSections(section) {
 	// eslint-disable-next-line import/namespace
@@ -14,7 +16,19 @@ function resolveSections(section) {
 }
 
 function Intro(props) {
-	const { content, references } = props;
+	const { content, references } = props,
+		[ref, inView, entry] = useInView({
+			/* Optional options */
+			rootMargin: "-50%"
+		}),
+		[sectionActive, setSection] = useGlobal("sectionActive");
+
+	useEffect(() => {
+		if (inView && sectionActive !== false) {
+			setSection(false);
+		}
+		return undefined;
+	}, [inView]);
 
 	if (!content) {
 		console.error("Missing section");
@@ -22,7 +36,7 @@ function Intro(props) {
 	}
 
 	return (
-		<article id="intro">
+		<article ref={ref} id="intro">
 			{content.map((section, i) => {
 				const IntroSection = resolveSections(section);
 				if (!IntroSection) {
@@ -51,7 +65,6 @@ function Intro(props) {
 					white-space: nowrap;
 					transform: rotate(-90deg) translate(-100%, -100%);
 					transform-origin: top left;
-					padding: 0.5rem 0;
 				}
 
 				@media screen and (max-width: 639px) {
@@ -64,6 +77,12 @@ function Intro(props) {
 					#intro,
 					.intro__section:not(:last-child) {
 						margin-bottom: 15rem;
+					}
+
+					html:not(.is--touch).intro__section:not(.intro__section--text)
+						figure:not(:hover)
+						figcaption {
+						display: none;
 					}
 				}
 			`}</style>
