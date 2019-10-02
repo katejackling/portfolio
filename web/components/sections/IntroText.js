@@ -25,60 +25,63 @@ function IntroText(props) {
 					<figcaption>
 						<Block blocks={text} />
 					</figcaption>
-					{content.map(({ _type, media, media_left, media_right }, i) => {
-						media = media ? media : media_left;
+					<div className="wrapper__media--intro">
+						{content.map(({ _type, media, media_left, media_right }, i) => {
+							media = media ? media : media_left;
 
-						return [
-							media && (
-								<Media
-									key={i}
-									type={media && media.type}
-									asset={
-										media && media.type === "video"
-											? media.video.mux.asset
-											: media.image.asset
-									}
-									gif={media && media.type === "video"}
-								/>
-							),
-							media_right && (
-								<Media
-									key={i + "_right"}
-									type={media_right && media_right.type}
-									asset={
-										media_right && media_right.type === "video"
-											? media_right.video.mux.asset
-											: media_right.image.asset
-									}
-									gif={media_right && media_right.type === "video"}
-								/>
-							)
-						];
-					})}
+							return [
+								media && (
+									<Media
+										key={i}
+										type={media && media.type}
+										asset={
+											media && media.type === "video"
+												? media.video.mux.asset
+												: media.image.asset
+										}
+										gif={media && media.type === "video"}
+									/>
+								),
+								media_right && (
+									<Media
+										key={i + "_right"}
+										type={media_right && media_right.type}
+										asset={
+											media_right && media_right.type === "video"
+												? media_right.video.mux.asset
+												: media_right.image.asset
+										}
+										gif={media_right && media_right.type === "video"}
+									/>
+								)
+							];
+						})}
+					</div>
 				</figure>
 			</Link>
 
 			<style jsx global>{`
 				.intro__section--text {
-					padding: 0 calc(var(--marginOuter) / 2);
+					padding: 0;
 				}
 
 				.intro__section--text:not(:first-child) {
 					padding-top: var(--marginMedium);
 				}
 
-				.intro__section--text figure {
+				.intro__section--text figcaption {
+					width: 100%;
+					font-size: calc(40px + (120 - 40) * (100vw - 360px) / (1920 - 360));
+					line-height: calc(42px + (115 - 42) * (100vw - 360px) / (1920 - 360));
+					padding: 0 var(--marginOuter);
+				}
+
+				.intro__section--text .wrapper__media--intro {
 					display: flex;
 					flex-wrap: wrap;
 					justify-content: flex-start;
-				}
-
-				.intro__section--text figcaption {
-					width: 100%;
-					font-size: calc(48px + (120 - 48) * (100vw - 360px) / (1920 - 360));
-					line-height: calc(52px + (115 - 52) * (100vw - 360px) / (1920 - 360));
-					padding: 0 calc(var(--marginOuter) / 2) calc(var(--marginOuter) / 2)
-						calc(var(--marginOuter) / 2);
+					padding: calc(var(--marginOuter) / 4 * 3);
+					padding-top: 0;
 				}
 
 				.intro__section--text img,
@@ -90,7 +93,7 @@ function IntroText(props) {
 					 {
 						/* height: calc(10rem + var(--marginOuter)); */
 					}
-					padding: calc(var(--marginOuter) / 2);
+					padding: calc(var(--marginOuter) / 4);
 				}
 
 				@media screen and (max-width: 639px) {

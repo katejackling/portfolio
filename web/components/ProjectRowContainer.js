@@ -66,6 +66,15 @@ function ProjectRowContainer(props) {
 					overflow-x: hidden;
 					overflow-y: hidden;
 					user-select: none;
+					--counterW: calc(2.5em + 0.3rem);
+				}
+
+				.slider img.lazyloaded {
+					transition: 0.5s;
+				}
+
+				.slider:hover li:not(:hover) img {
+					opacity: 0.33;
 				}
 
 				.slider__wrapper {
@@ -77,12 +86,14 @@ function ProjectRowContainer(props) {
 					display: flex;
 					justify-content: space-between;
 					padding: calc(var(--marginOuter) / 2);
+					padding-top: 0;
 				}
 
 				.slider li {
 					display: flex;
 					flex-wrap: nowrap;
 					padding: calc(var(--marginOuter) / 2);
+					padding-top: 0;
 				}
 
 				.slider li figure {
@@ -103,7 +114,9 @@ function ProjectRowContainer(props) {
 					-webkit-user-drag: none;
 					user-drag: none;
 					-webkit-touch-callout: none;
-					height: 7.5rem !important;
+					height: calc(
+						16px * 6.5 + (16 * 7.5 - 16 * 6.5) * (100vw - 360px) / (1440 - 360)
+					);
 					width: auto !important;
 				}
 
@@ -112,14 +125,17 @@ function ProjectRowContainer(props) {
 
 				@media screen and (min-width: 640px) {
 					.slider li figure {
-						padding: 0 calc((var(--marginOuter) / 2 + 1rem + 1rem) * 1.5) 0 0;
 						 {
-							/* background: red; */
+							/* 
+							padding: 0 calc((var(--marginOuter) / 2 + 1rem + 1rem) * 1.5) 0 0;
+							background: red; */
 						}
+						padding-right: var(--counterW);
 					}
 
 					.slider ul {
 						counter-reset: section;
+						padding-top: calc(var(--marginOuter) / 4);
 					}
 
 					.slider li {
@@ -128,11 +144,20 @@ function ProjectRowContainer(props) {
 
 					.slider li figure figcaption {
 						width: calc((var(--marginOuter) / 2 + 1rem + 1rem) * 1.5);
+						width: var(--counterW);
 						position: absolute;
-						top: 0;
+						top: -0.17em;
 						right: 0;
 						white-space: nowrap;
-						padding: 0 0.5rem;
+						padding-left: 0.3rem;
+					}
+				}
+				@media screen and (min-width: 1440px) {
+					.slider img,
+					.slider video {
+						height: calc(
+							16px * 7.5 + (16 * 9.5 - 16 * 7.5) * (100vw - 1440px) / (2560 - 1440)
+						);
 					}
 				}
 			`}</style>

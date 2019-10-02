@@ -20,6 +20,16 @@ export default {
 			}
 		},
 		{
+			title: 'Additional Info',
+			name: 'additional_info',
+			type: 'string'
+		},
+		{
+			title: 'Year',
+			name: 'year',
+			type: 'string'
+		},
+		{
 			title: 'Content',
 			name: 'content',
 			type: 'array',

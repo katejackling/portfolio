@@ -31,7 +31,7 @@ function Intro100(props) {
 				.intro__section.intro__section--100 figcaption {
 					color: white;
 					mix-blend-mode: difference;
-					padding: 0.5rem;
+					padding: 0.35rem 0.5rem;
 				}
 			`}</style>
 		</section>

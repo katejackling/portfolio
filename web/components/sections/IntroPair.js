@@ -66,7 +66,7 @@ function IntroPair(props) {
 
 			<style jsx global>{`
 				.intro__section--pair figcaption {
-					padding: 0.5rem 0;
+					padding-top: 0.2rem;
 				}
 
 				@media screen and (min-width: 640px) {
@@ -79,7 +79,7 @@ function IntroPair(props) {
 
 					.intro__section.intro__section--pair figure {
 						width: 50%;
-						padding: 0 calc(var(--marginOuter) / 2 + 1rem + 1rem) 0
+						padding: 0 calc(var(--marginOuter) / 2 + 0.2rem + 1rem) 0
 							calc(var(--marginOuter) / 2);
 						align-self: flex-start;
 					}

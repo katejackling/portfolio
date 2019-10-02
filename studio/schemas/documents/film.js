@@ -19,6 +19,16 @@ export default {
 				maxLength: 96
 			}
 		},
+		{
+			title: 'Additional Info',
+			name: 'additional_info',
+			type: 'string'
+		},
+		{
+			title: 'Year',
+			name: 'year',
+			type: 'string'
+		},
 		{ title: 'Featured Media', name: 'mediaFeatured', type: 'mux.video' },
 		{
 			title: 'Content',

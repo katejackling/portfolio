@@ -40,6 +40,10 @@ function About(props) {
 				{/* <Block blocks={content.legal_notice} /> */}
 			</section>
 			<style jsx global>{`
+				#info p:not(:last-child) {
+					margin-bottom: 1.25em;
+				}
+
 				.info {
 					display: flex;
 					flex-wrap: wrap;

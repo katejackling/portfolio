@@ -59,7 +59,7 @@ function Intro50(props) {
 				}
 
 				.intro__section--50 figcaption {
-					padding: 0.5rem 0;
+					padding-top: 0.2rem;
 				}
 
 				@media screen and (max-width: 639px) {
@@ -80,7 +80,7 @@ function Intro50(props) {
 
 					.intro__section.intro__section--50 figure {
 						width: 50%;
-						padding: 0 calc(var(--marginOuter) / 2 + 1rem + 1rem) 0
+						padding: 0 calc(var(--marginOuter) / 2 + 0.2rem + 1rem) 0
 							calc(var(--marginOuter) / 2);
 					}
 					.intro__section--50::after {

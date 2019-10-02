@@ -23,7 +23,6 @@ function ProjectFeed(props) {
 
 	return (
 		<article ref={ref} id={type} className={type !== "film" ? "projects row" : "projects grid"}>
-			<h2>{title}</h2>
 			<ul>
 				{posts.map(({ _id, title = "", slug = "", content = [], mediaFeatured }) => {
 					let total = 0;
@@ -56,8 +55,11 @@ function ProjectFeed(props) {
 					padding-bottom: 15rem;
 				}
 				.project:not(:last-child) {
-					margin-bottom: var(--marginMedium);
+					margin-bottom: calc(
+						16px * 2 + (16 * 3 - 16 * 2) * (100vw - 360px) / (1440 - 360)
+					);
 				}
+
 				.projects h2 {
 					padding: 0 var(--marginOuter);
 					text-transform: uppercase;
@@ -70,10 +72,6 @@ function ProjectFeed(props) {
 				.grid {
 					width: 100%;
 					user-select: none;
-				}
-
-				.grid h3 {
-					margin-bottom: var(--marginOuter);
 				}
 
 				.grid ul {
@@ -117,12 +115,24 @@ function ProjectFeed(props) {
 						text-align: center;
 					}
 
+					.grid h3 {
+						margin-bottom: var(--marginOuter);
+					}
+
 					.grid li {
 						width: 50%;
 					}
 					.grid video {
 						width: calc(20rem * var(--ratio));
 						max-width: calc((100vw - 3 * var(--marginOuter)) / 2);
+					}
+				}
+
+				@media screen and (min-width: 1440px) {
+					.project:not(:last-child) {
+						margin-bottom: calc(
+							16px * 3 + (16 * 7.5 - 16 * 3) * (100vw - 1440px) / (2560 - 1440)
+						);
 					}
 				}
 			`}</style>

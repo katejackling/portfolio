@@ -38,7 +38,7 @@ function Intro75(props) {
 
 			<style jsx global>{`
 				.intro__section--75 figcaption {
-					padding: 0.5rem 0;
+					padding-top: 0.2rem;
 				}
 
 				@media screen and (min-width: 640px) {
@@ -49,7 +49,7 @@ function Intro75(props) {
 
 					.intro__section.intro__section--75 figure {
 						width: 75%;
-						padding: 0 calc(var(--marginOuter) / 2 + 1rem + 1rem) 0
+						padding: 0 calc(var(--marginOuter) / 2 + 0.2rem + 1rem) 0
 							calc(var(--marginOuter) / 2);
 					}
 				}

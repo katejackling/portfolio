@@ -80,7 +80,7 @@ class Img extends React.Component {
 					img {
 						opacity: 0;
 						filter: blur(5px);
-						transition: 1s filter 400ms, opacity 1s;
+						transition: filter 1s, opacity 1s;
 					}
 
 					img.lazyloaded {

@@ -67,6 +67,12 @@ function Intro(props) {
 					transform-origin: top left;
 				}
 
+				#intro .intro__section:not(.intro__section--text) a:hover img,
+				#intro .intro__section.intro__section--text img:hover,
+				#intro a:hover video {
+					filter: grayscale(1) invert(1);
+				}
+
 				@media screen and (max-width: 639px) {
 					.intro__section:not(.intro__section--text) figcaption {
 						display: none;
@@ -79,10 +85,12 @@ function Intro(props) {
 						margin-bottom: 15rem;
 					}
 
-					html:not(.is--touch).intro__section:not(.intro__section--text)
+					 {
+						/* html:not(.is--touch).intro__section:not(.intro__section--text)
 						figure:not(:hover)
 						figcaption {
 						display: none;
+					} */
 					}
 				}
 			`}</style>
