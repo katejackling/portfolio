@@ -1,64 +1,66 @@
-import { useGlobal } from "reactn";
-
-import { Link } from "react-scroll";
-
+import { setGlobal } from "reactn";
 import Media from "../../components/Media";
+import client from "../../client";
 import Block from "../../components/Block";
 
 function IntroText(props) {
 	const { reference = "", text } = props,
-		content = reference.content,
-		[headerSize, setHeaderHeight] = useGlobal("headerSize");
+		content = reference.content;
 
-	let offsetHeader = headerSize && headerSize.height * -1;
+	const enableViewer = (viewerID, slideIndex, slug) => {
+		history.pushState({}, "", "/" + slug);
+		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
+			const title = res[0].title;
+			const content = res[0].content;
+			setGlobal({
+				viewerTitle: title,
+				viewerOpen: true,
+				viewerContent: content,
+				viewerID,
+				slideIndex
+			});
+		});
+	};
 
 	return (
 		<section className="intro__section intro__section--text">
-			<Link
-				to={reference && reference._id}
-				spy={true}
-				smooth={true}
-				duration={500}
-				offset={offsetHeader}
-			>
-				<figure>
-					<figcaption>
-						<Block blocks={text} />
-					</figcaption>
-					<div className="wrapper__media--intro">
-						{content.map(({ _type, media, media_left, media_right }, i) => {
-							media = media ? media : media_left;
+			<figure onClick={() => enableViewer(reference._id, 0, reference.slug.current)}>
+				<figcaption>
+					<Block blocks={text} />
+				</figcaption>
+				<div className="wrapper__media--intro">
+					{content.map(({ _type, media, media_left, media_right }, i) => {
+						media = media ? media : media_left;
 
-							return [
-								media && (
-									<Media
-										key={i}
-										type={media && media.type}
-										asset={
-											media && media.type === "video"
-												? media.video.mux.asset
-												: media.image.asset
-										}
-										gif={media && media.type === "video"}
-									/>
-								),
-								media_right && (
-									<Media
-										key={i + "_right"}
-										type={media_right && media_right.type}
-										asset={
-											media_right && media_right.type === "video"
-												? media_right.video.mux.asset
-												: media_right.image.asset
-										}
-										gif={media_right && media_right.type === "video"}
-									/>
-								)
-							];
-						})}
-					</div>
-				</figure>
-			</Link>
+						return [
+							media && (
+								<Media
+									key={i}
+									type={media && media.type}
+									asset={
+										media && media.type === "video"
+											? media.video.mux.asset
+											: media.image.asset
+									}
+									gif={media && media.type === "video"}
+								/>
+							),
+							media_right && (
+								<Media
+									key={i + "_right"}
+									type={media_right && media_right.type}
+									asset={
+										media_right && media_right.type === "video"
+											? media_right.video.mux.asset
+											: media_right.image.asset
+									}
+									gif={media_right && media_right.type === "video"}
+								/>
+							)
+						];
+					})}
+				</div>
+			</figure>
 
 			<style jsx global>{`
 				.intro__section--text {

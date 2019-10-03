@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { setCustomProperty } from "../scripts/helpers.js";
 
 export default function useWindowSize() {
 	const isClient = typeof window === "object";
@@ -17,12 +18,16 @@ export default function useWindowSize() {
 			return false;
 		}
 
-		function handleResize() {
-			setWindowSize(getSize());
+		function setSize() {
+			let windowSize = getSize();
+			setWindowSize(windowSize);
+			setCustomProperty("--vH", `${windowSize.height * 0.01}px`);
 		}
 
-		window.addEventListener("resize", handleResize);
-		return () => window.removeEventListener("resize", handleResize);
+		setSize();
+
+		window.addEventListener("resize", setSize);
+		return () => window.removeEventListener("resize", setSize);
 	}, []); // Empty array ensures that effect is only run on mount and unmount
 
 	return windowSize;

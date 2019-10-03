@@ -2,6 +2,7 @@ import client from "../client";
 import Link from "next/link";
 import { useGlobal, useRef, useEffect } from "reactn";
 import { useInView } from "react-intersection-observer";
+import Parser from "html-react-parser";
 
 import ProjectRowContainer from "./ProjectRowContainer";
 import ProjectGridContainer from "./ProjectGridContainer";
@@ -9,10 +10,10 @@ import ProjectGridContainer from "./ProjectGridContainer";
 function ProjectFeed(props) {
 	const { posts, title = "", type = "" } = props,
 		[ref, inView, entry] = useInView({
-			/* Optional options */
 			rootMargin: "-50%"
 		}),
-		[sectionActive, setSection] = useGlobal("sectionActive");
+		[sectionActive, setSection] = useGlobal("sectionActive"),
+		[mediaHover, setMediaHover] = useGlobal("mediaHover");
 
 	useEffect(() => {
 		if (inView && sectionActive !== type) {
@@ -24,33 +25,60 @@ function ProjectFeed(props) {
 	return (
 		<article ref={ref} id={type} className={type !== "film" ? "projects row" : "projects grid"}>
 			<ul>
-				{posts.map(({ _id, title = "", slug = "", content = [], mediaFeatured }) => {
-					let total = 0;
+				{posts.map(
+					({
+						_id,
+						title = "",
+						slug = "",
+						additional_info,
+						year,
+						content = [],
+						mediaFeatured
+					}) => {
+						let total = 0;
 
-					content.forEach(slide => {
-						total = total + (slide.hasOwnProperty("media_right") ? 2 : 1);
-					});
+						content.forEach(slide => {
+							total = total + (slide.hasOwnProperty("media_right") ? 2 : 1);
+						});
+						// console.log(slug);
 
-					return (
-						slug && (
-							<li key={_id} className="project" id={_id}>
-								<h3>{title}</h3>
-								{type !== "film" ? (
-									<ProjectRowContainer content={content} id={_id} total={total} />
-								) : (
-									<ProjectGridContainer
-										mediaFeatured={mediaFeatured}
-										content={content}
-										id={_id}
-										total={total}
-									/>
-								)}
-							</li>
-						)
-					);
-				})}
+						return (
+							slug && (
+								<li key={_id} className="project" id={_id}>
+									<h3>
+										<span className="title">{title}</span>
+										{additional_info
+											? Parser(`, <em>${additional_info}</em>`)
+											: ""}
+										{year ? `, ${year}` : ""}
+									</h3>
+									{type !== "film" ? (
+										<ProjectRowContainer
+											content={content}
+											id={_id}
+											total={total}
+											slug={slug.current}
+										/>
+									) : (
+										<ProjectGridContainer
+											mediaFeatured={mediaFeatured}
+											content={content}
+											id={_id}
+											total={total}
+											slug={slug.current}
+										/>
+									)}
+								</li>
+							)
+						);
+					}
+				)}
 			</ul>
 			<style jsx global>{`
+				.title {
+					text-transform: uppercase;
+				}
+
 				.projects:not(:last-child) {
 					padding-bottom: 15rem;
 				}
@@ -101,6 +129,16 @@ function ProjectFeed(props) {
 					-webkit-touch-callout: none;
 				}
 
+				.grid img.lazyloaded,
+				.grid video {
+					transition: 0.5s;
+				}
+
+				body:not(.is--touch) .grid ul:hover li:not(:hover) img,
+				body:not(.is--touch) .grid ul:hover li:not(:hover) video {
+					opacity: ${mediaHover ? 0.4 : 1};
+				}
+
 				@media screen and (max-width: 639px) {
 					.grid li,
 					.grid figure,
@@ -116,7 +154,7 @@ function ProjectFeed(props) {
 					}
 
 					.grid h3 {
-						margin-bottom: var(--marginOuter);
+						margin-bottom: calc(var(--marginOuter) / 4);
 					}
 
 					.grid li {

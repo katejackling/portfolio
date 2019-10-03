@@ -1,4 +1,5 @@
 import React, { setGlobal } from "reactn";
+import { useRouter } from "next/router";
 
 import client from "../client";
 import Link from "next/link";
@@ -12,54 +13,55 @@ import Footer from "../components/Footer";
 
 import addReactNDevTools from "reactn-devtools";
 
-addReactNDevTools();
-
 import "../styles/main.css";
 
-setGlobal({
-	navOpen: false,
-	viewerTitle: false,
-	viewerOpen: false,
-	viewerContent: null,
-	viewerID: null,
-	slideIndex: 0,
-	headerHeight: 0,
-	sectionActive: false
-});
+addReactNDevTools();
 
-class Index extends React.Component {
-	render() {
-		const { about } = this.props;
+function Index(props) {
+	const router = useRouter();
+	console.log(router.query);
+	const { id } = router.query;
 
-		return (
-			<>
-				<Head>
-					<title>My page title</title>
-					<meta
-						name="viewport"
-						content="initial-scale=1.0, width=device-width"
-						key="viewport"
-					/>
-				</Head>
-
-				<Header />
-				<main>
-					<IntroContainer />
-					<Projects />
-					<About content={about} />
-					<Footer />
-				</main>
-			</>
-		);
+	if (process.browser) {
+		require("../utils/scripts/detection");
 	}
 
-	componentDidMount() {
-		require("../scripts/document.js");
-	}
+	setGlobal({
+		navOpen: false,
+		viewerTitle: false,
+		viewerOpen: false,
+		viewerContent: null,
+		viewerID: null,
+		slideIndex: 0,
+		headerHeight: 0,
+		sectionActive: false,
+		mediaHover: false
+	});
+
+	return (
+		<>
+			<Head>
+				<title>Kate Jackling</title>
+				<meta
+					name="viewport"
+					content="initial-scale=1.0, width=device-width"
+					key="viewport"
+				/>
+			</Head>
+
+			<Header />
+			<main>
+				<IntroContainer />
+				<Projects />
+				<About />
+				<Footer />
+			</main>
+		</>
+	);
 }
 
 export default Index;
 
-Index.getInitialProps = async () => ({
-	about: await client.fetch(`*[_id == "about"][0]`)
-});
+// componentDidMount() {
+// 	require("../scripts/document.js");
+// }

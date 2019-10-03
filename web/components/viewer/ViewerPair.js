@@ -1,7 +1,6 @@
 import Media from "../../components/Media";
 
 function ViewerPair(props) {
-	console.log(props);
 	const { media_left, media_right } = props,
 		asset_left =
 			media_left.type === "video" ? media_left.video.mux.asset : media_left.image.asset,

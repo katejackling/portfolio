@@ -1,7 +1,7 @@
-import { useState, useRef, useGlobal } from "reactn";
+import { useState, useRef, useEffect, useGlobal } from "reactn";
 
 import useDimensions from "../utils/hooks/useDimensions";
-
+import { setCustomProperty } from "../utils/scripts/helpers.js";
 import { useSpring, animated, interpolate, config } from "react-spring";
 import * as Scroll from "react-scroll";
 
@@ -16,11 +16,14 @@ function Header(props) {
 	let Events = Scroll.Events;
 
 	Events.scrollEvent.register("begin", function(to, element) {
-		console.log("begin", to, element);
 		navOpen && toggleNav(false);
 	});
 
 	let offsetHeader = headerSize && headerSize.height * -1;
+
+	useEffect(() => {
+		setCustomProperty("--headerH", `${headerSize ? headerSize.height : 0}px`);
+	});
 
 	return (
 		<header ref={headerRef} data-nav-active={navOpen}>

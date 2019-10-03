@@ -1,4 +1,4 @@
-import { capitalize } from "../scripts/utils";
+import { capitalize } from "../utils/scripts/helpers";
 import * as IntroSections from "./sections";
 import { useGlobal, useRef, useEffect } from "reactn";
 import { useInView } from "react-intersection-observer";
@@ -67,9 +67,19 @@ function Intro(props) {
 					transform-origin: top left;
 				}
 
-				#intro .intro__section:not(.intro__section--text) a:hover img,
-				#intro .intro__section.intro__section--text img:hover,
-				#intro a:hover video {
+				body:not(.is--touch)
+					#intro
+					.intro__section:not(.intro__section--text)
+					figure:hover
+					img,
+				body:not(.is--touch) #intro .intro__section.intro__section--text img:hover,
+				body:not(.is--touch)
+					#intro
+					.intro__section:not(.intro__section--text)
+					figure:hover
+					video,
+				body:not(.is--touch) #intro .intro__section.intro__section--text video:hover {
+					cursor: pointer;
 					filter: grayscale(1) invert(1);
 				}
 

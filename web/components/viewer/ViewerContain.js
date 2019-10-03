@@ -6,8 +6,6 @@ function ViewerContain(props) {
 		type = media.type,
 		fit = _type.replace("viewer", "").toLowerCase();
 
-	console.log(media);
-
 	return (
 		<figure className={fit}>
 			<Media media={media} asset={asset} type={type} fit={fit} />

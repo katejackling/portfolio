@@ -1,14 +1,31 @@
 import { useState, useEffect, useDispatch, useGlobal } from "reactn";
 
 import useWindowSize from "../utils/hooks/useWindowSize";
-import { capitalize } from "../scripts/utils";
+import { capitalize } from "../utils/scripts/helpers";
 import { useHotkeys } from "react-hotkeys-hook";
 import * as ViewerSections from "./viewer";
 
 function ProjectViewer(props) {
 	const { content, clickEnabled } = props,
-		[slideIndex, setSlide] = useGlobal("slideIndex");
-	let currIndex = slideIndex;
+		[slideIndex, setSlide] = useGlobal("slideIndex"),
+		[nextIndex, setNextIndex] = useState(
+			slideIndex === content.length - 1 ? 0 : slideIndex + 1
+		),
+		[prevIndex, setPrevIndex] = useState(
+			slideIndex === 0 ? content.length - 1 : slideIndex - 1
+		);
+
+	const goNext = () => {
+		setPrevIndex(slideIndex);
+		setSlide(nextIndex);
+		setNextIndex(nextIndex === content.length - 1 ? 0 : nextIndex + 1);
+	};
+
+	const goPrev = () => {
+		setPrevIndex(prevIndex === 0 ? content.length - 1 : prevIndex - 1);
+		setSlide(prevIndex);
+		setNextIndex(slideIndex);
+	};
 
 	let resolveSections = section => {
 		// eslint-disable-next-line import/namespace
@@ -27,17 +44,27 @@ function ProjectViewer(props) {
 	});
 	const resetViewer = useDispatch(resetViewerReducer);
 
-	useHotkeys("right", () => {
-		let newIndex = currIndex === content.length - 1 ? 0 : currIndex + 1;
-		setSlide(newIndex);
-		currIndex = newIndex;
+	useEffect(() => {
+		function keyDown() {
+			if (event.keyCode == 37) {
+				goPrev();
+			} else if (event.keyCode == 39) {
+				goNext();
+			} else if (event.keyCode == 27) {
+				resetViewer();
+				history.pushState({}, "", "/");
+			}
+		}
+		document.addEventListener("keydown", keyDown);
+
+		return () => {
+			document.removeEventListener("keydown", keyDown);
+		};
 	});
-	useHotkeys("left", () => {
-		let newIndex = currIndex === 0 ? content.length - 1 : currIndex - 1;
-		setSlide(newIndex);
-		currIndex = newIndex;
-	});
-	useHotkeys("esc", () => resetViewer());
+
+	window.onpopstate = event => {
+		resetViewer();
+	};
 
 	return (
 		<ul>
@@ -50,11 +77,9 @@ function ProjectViewer(props) {
 					<li
 						key={section._key}
 						className={slideIndex === i ? "visible" : "hidden"}
-						onMouseUp={() => {
-							console.log(i);
-
+						onClick={() => {
 							if (clickEnabled) {
-								setSlide(slideIndex === content.length - 1 ? 0 : i + 1);
+								goNext();
 							}
 						}}
 					>

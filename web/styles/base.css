@@ -42,6 +42,10 @@ strong {
 	font-weight: bold;
 }
 
+.uppercase {
+	text-transform: uppercase !important;
+}
+
 img,
 video {
 	width: 100%;

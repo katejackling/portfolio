@@ -3,14 +3,15 @@ import client from "../client";
 import ProjectRowItem from "../components/ProjectRowItem";
 
 function ProjectRow(props) {
-	const { content, id, total, clickEnabled } = props;
+	const { content, id, total, clickEnabled, slug } = props;
 
-	const enableViewer = (viewerID, slideIndex) => {
+	const enableViewer = (viewerID, slideIndex, slug) => {
+		history.pushState({}, "", "/" + slug);
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
-			console.log(res[0]);
+			// console.log(res[0]);
 			const title = res[0].title;
 			const content = res[0].content;
-			console.log(viewerID, slideIndex, content);
+			// console.log(viewerID, slideIndex, content);
 			setGlobal({
 				viewerTitle: title,
 				viewerOpen: true,
@@ -31,7 +32,7 @@ function ProjectRow(props) {
 						{(media_left || media) && (
 							<li
 								onMouseUp={() => {
-									clickEnabled && enableViewer(id, i);
+									clickEnabled && enableViewer(id, i, slug);
 								}}
 							>
 								<ProjectRowItem
@@ -45,7 +46,7 @@ function ProjectRow(props) {
 							<li
 								key={rowIndex + media_right}
 								onMouseUp={() => {
-									clickEnabled && enableViewer(id, i);
+									clickEnabled && enableViewer(id, i, slug);
 								}}
 							>
 								<ProjectRowItem

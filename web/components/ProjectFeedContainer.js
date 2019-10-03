@@ -1,31 +1,15 @@
-import client from "../client";
 import ProjectFeed from "../components/ProjectFeed";
-import { capitalize } from "../scripts/utils";
+import { capitalize } from "../utils/scripts/helpers";
+import useClientFetch from "../utils/hooks/useClientFetch";
 
-class ProjectFeedContainer extends React.Component {
-	state = { posts: [] };
+function ProjectFeedContainer(props) {
+	const { type } = props;
+	const data = useClientFetch(`*[_type=="home"][0]{${type}[]->}`);
 
-	componentDidMount() {
-		const type = this.props.type;
-		return client.fetch(`*[_type=="home"][0]{${type}[]->}`).then(posts => {
-			this.setState({
-				posts: posts[type]
-			});
-		});
+	if (!data) {
+		return null;
 	}
-
-	render() {
-		if (!this.state) {
-			return null;
-		}
-		return (
-			<ProjectFeed
-				title={capitalize(this.props.type)}
-				type={this.props.type}
-				posts={this.state.posts}
-			/>
-		);
-	}
+	return <ProjectFeed title={capitalize(type)} type={type} posts={data[type]} />;
 }
 
 export default ProjectFeedContainer;

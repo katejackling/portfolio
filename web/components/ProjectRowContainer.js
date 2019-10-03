@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useGlobal } from "reactn";
 import { withRouter } from "next/router";
 import useMeasure from "../utils/hooks/useMeasure";
 import useWindowSize from "../utils/hooks/useWindowSize";
@@ -12,9 +12,10 @@ import Media from "./Media";
 import ProjectRow from "../components/ProjectRow";
 
 function ProjectRowContainer(props) {
-	const [sliderRef, sliderSize] = useMeasure();
-	const [contentRef, contentSize] = useMeasure();
-	const [clickEnabled, toggleClick] = useState(false);
+	const [sliderRef, sliderSize] = useMeasure(),
+		[contentRef, contentSize] = useMeasure(),
+		[clickEnabled, toggleClick] = useState(false),
+		[mediaHover, setMediaHover] = useGlobal("mediaHover");
 
 	let sliderBoundaries = { left: sliderSize.width - contentSize.width, right: 0 };
 	let sliderEnabled = contentSize.width > sliderSize.width ? true : false;
@@ -44,7 +45,7 @@ function ProjectRowContainer(props) {
 		}
 	});
 
-	const { content, id, total } = props;
+	const { content, id, total, slug } = props;
 
 	return (
 		<div className="slider" {...sliderRef}>
@@ -58,7 +59,13 @@ function ProjectRowContainer(props) {
 						: "none"
 				}}
 			>
-				<ProjectRow content={content} id={id} total={total} clickEnabled={clickEnabled} />
+				<ProjectRow
+					content={content}
+					id={id}
+					total={total}
+					clickEnabled={clickEnabled}
+					slug={slug}
+				/>
 			</animated.div>
 			<style jsx global>{`
 				.slider {
@@ -73,9 +80,28 @@ function ProjectRowContainer(props) {
 					transition: 0.5s;
 				}
 
-				.slider:hover li:not(:hover) img {
-					opacity: 0.33;
+				body:not(.is--touch) .slider:hover li:not(:hover) img,
+				body:not(.is--touch) .slider:hover li:not(:hover) video {
+					opacity: ${mediaHover ? 0.33 : 1};
 				}
+
+				{/* .slider img.lazyloaded {
+					transition: none;
+				}
+
+				.row .project {
+					transition: 0.5s;
+				}
+
+				body:not(.is--touch) .row:hover .project:hover li:not(:hover) img,
+				body:not(.is--touch) .row:hover .project:hover li:not(:hover) video {
+					opacity: ${mediaHover ? 0.4 : 1};
+				}
+
+				body:not(.is--touch) .row:hover .project:not(:hover),
+				body:not(.is--touch) .row:hover .project:not(:hover) {
+					opacity: 0.1;
+				} */}
 
 				.slider__wrapper {
 					display: inline-block;
@@ -156,7 +182,7 @@ function ProjectRowContainer(props) {
 					.slider img,
 					.slider video {
 						height: calc(
-							16px * 7.5 + (16 * 9.5 - 16 * 7.5) * (100vw - 1440px) / (2560 - 1440)
+							16px * 7.5 + (16 * 11.5 - 16 * 7.5) * (100vw - 1440px) / (2560 - 1440)
 						);
 					}
 				}

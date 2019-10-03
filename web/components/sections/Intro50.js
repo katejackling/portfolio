@@ -1,40 +1,47 @@
-import { useGlobal } from "reactn";
-
+import { setGlobal } from "reactn";
+import Parser from "html-react-parser";
 import Media from "../../components/Media";
-import { Link } from "react-scroll";
+import client from "../../client";
 
 function Intro50(props) {
 	const { media = "", reference = "", layout = "", text } = props;
 	const asset = media.condition ? media.video.mux.asset : media.image.asset,
-		type = media.condition ? "video" : "image",
-		[headerSize, setHeaderHeight] = useGlobal("headerSize");
+		type = media.condition ? "video" : "image";
 
-	let offsetHeader = headerSize && headerSize.height * -1;
+	const enableViewer = (viewerID, slideIndex, slug) => {
+		history.pushState({}, "", "/" + slug);
+		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
+			const title = res[0].title;
+			const content = res[0].content;
+			setGlobal({
+				viewerTitle: title,
+				viewerOpen: true,
+				viewerContent: content,
+				viewerID,
+				slideIndex
+			});
+		});
+	};
 
 	return (
 		<section className="intro__section intro__section--50">
-			<figure>
-				<Link
-					to={reference && reference._id}
-					spy={true}
-					smooth={true}
-					duration={500}
-					offset={offsetHeader}
-				>
-					<Media asset={asset} type={type} />
-				</Link>
+			<figure onClick={() => enableViewer(reference._id, 0, reference.slug.current)}>
+				<Media asset={asset} type={type} />
+
 				<figcaption>
-					<Link
-						to={reference && reference._id}
-						spy={true}
-						smooth={true}
-						duration={500}
-						offset={offsetHeader}
-					>
-						{reference && reference.title}
-					</Link>
+					<span className="title">{reference && reference.title}</span>
+					{reference.additional_info
+						? Parser(`, <em>${reference.additional_info}</em>`)
+						: ""}
+					{reference.year ? `, ${reference.year}` : ""}
 				</figcaption>
 			</figure>
+
+			<style jsx>{`
+				.intro__section--50::after {
+					content: ${text ? '"' + text + '"' : "none"};
+				}
+			`}</style>
 
 			<style jsx global>{`
 				.intro__section--50 {
@@ -42,7 +49,6 @@ function Intro50(props) {
 				}
 
 				.intro__section--50::after {
-					content: ${text ? '"' + text + '"' : "none"};
 					position: absolute;
 					top: 50%;
 					left: 50%;

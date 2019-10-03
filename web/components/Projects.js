@@ -6,8 +6,6 @@ import ProjectViewerContainer from "../components/ProjectViewerContainer";
 function Projects(props) {
 	const [viewerOpen] = useGlobal("viewerOpen");
 
-	console.log(viewerOpen);
-
 	return (
 		<>
 			<ProjectFeedContainer type="stilllife" />

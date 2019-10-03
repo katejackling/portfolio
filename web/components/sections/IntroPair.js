@@ -1,7 +1,7 @@
-import { useGlobal } from "reactn";
-
+import { setGlobal } from "reactn";
+import Parser from "html-react-parser";
 import Media from "../../components/Media";
-import { Link } from "react-scroll";
+import client from "../../client";
 
 function IntroPair(props) {
 	const { layout, reference, media_left, media_right } = props,
@@ -11,56 +11,46 @@ function IntroPair(props) {
 		type_left = media_left.type,
 		asset_right =
 			media_right.type === "video" ? media_right.video.mux.asset : media_right.image.asset,
-		type_right = media_right.type,
-		[headerSize, setHeaderHeight] = useGlobal("headerSize");
+		type_right = media_right.type;
 
-	let offsetHeader = headerSize && headerSize.height * -1;
+	const enableViewer = (viewerID, slideIndex, slug) => {
+		history.pushState({}, "", "/" + slug);
+		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
+			const title = res[0].title;
+			const content = res[0].content;
+			setGlobal({
+				viewerTitle: title,
+				viewerOpen: true,
+				viewerContent: content,
+				viewerID,
+				slideIndex
+			});
+		});
+	};
 
 	return (
 		<section className="intro__section intro__section--pair">
-			<figure>
-				<Link
-					to={reference[0] && reference[0]._id}
-					spy={true}
-					smooth={true}
-					duration={500}
-					offset={offsetHeader}
-				>
-					<Media asset={asset_left} type={type_left} />
-				</Link>
+			<figure onClick={() => enableViewer(reference[0]._id, 0, reference[0].slug.current)}>
+				<Media asset={asset_left} type={type_left} />
+
 				<figcaption>
-					<Link
-						to={reference[0] && reference[0]._id}
-						spy={true}
-						smooth={true}
-						duration={500}
-						offset={offsetHeader}
-					>
-						{reference[0] && reference[0].title}
-					</Link>
+					<span className="title">{reference[0] && reference[0].title}</span>
+					{reference[0].additional_info
+						? Parser(`, <em>${reference[0].additional_info}</em>`)
+						: ""}
+					{reference[0].year ? `, ${reference[0].year}` : ""}
 				</figcaption>
 			</figure>
 
-			<figure>
-				<Link
-					to={reference[1] && reference[1]._id}
-					spy={true}
-					smooth={true}
-					duration={500}
-					offset={offsetHeader}
-				>
-					<Media asset={asset_right} type={type_right} />
-				</Link>
+			<figure onClick={() => enableViewer(reference[1]._id, 0, reference[1].slug.current)}>
+				<Media asset={asset_right} type={type_right} />
+
 				<figcaption>
-					<Link
-						to={reference[1] && reference[1]._id}
-						spy={true}
-						smooth={true}
-						duration={500}
-						offset={offsetHeader}
-					>
-						{reference[1] && reference[1].title}
-					</Link>
+					<span className="title">{reference[1] && reference[1].title}</span>
+					{reference[1].additional_info
+						? Parser(`, <em>${reference[1].additional_info}</em>`)
+						: ""}
+					{reference[1].year ? `, ${reference[1].year}` : ""}
 				</figcaption>
 			</figure>
 

@@ -3,11 +3,13 @@ import Media from "./Media";
 import client from "../client";
 
 function ProjectGridContainer(props) {
-	const { mediaFeatured, id } = props;
-	const enableViewer = (viewerID, slideIndex) => {
+	const { mediaFeatured, id, slug } = props;
+	const enableViewer = (viewerID, slideIndex, slug) => {
+		history.pushState({}, "", "/" + slug);
+
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
 			const content = res[0].content;
-			console.log(viewerID, slideIndex, content);
+			// console.log(viewerID, slideIndex, content);
 			setGlobal({
 				viewerOpen: true,
 				viewerContent: content,
@@ -19,7 +21,7 @@ function ProjectGridContainer(props) {
 	return (
 		<figure
 			onClick={() => {
-				enableViewer(id, 0);
+				enableViewer(id, 0, slug);
 			}}
 		>
 			<Media type="video" asset={mediaFeatured.asset} gif={false} />

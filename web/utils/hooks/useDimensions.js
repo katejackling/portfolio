@@ -28,9 +28,11 @@ function useDimensions(global) {
 		if (node) {
 			const measure = () => {
 				window.requestAnimationFrame(() => setDimensions(getDimensionObject(node)));
-				let globalObj = { [global.global]: getDimensionObject(node) };
-				console.log(getDimensionObject(node), global.global, globalObj);
-				setGlobal(globalObj);
+				if (!global) {
+					let globalObj = { [global.global]: getDimensionObject(node) };
+					// console.log(getDimensionObject(node), global.global, globalObj);
+					setGlobal(globalObj);
+				}
 			};
 
 			measure();

@@ -2,7 +2,6 @@ import { useState, useEffect, useDispatch, useGlobal } from "reactn";
 import { throws } from "assert";
 
 import useWindowSize from "../utils/hooks/useWindowSize";
-import { capitalize } from "../scripts/utils";
 import { useSpring, animated, interpolate, config } from "react-spring";
 import { useGesture } from "react-use-gesture";
 import { clamp, debounce } from "lodash";
@@ -17,7 +16,7 @@ function ProjectViewerContainer(props) {
 		[viewerOpen] = useGlobal("viewerOpen"),
 		[viewerContent] = useGlobal("viewerContent");
 
-	console.log(viewerContent);
+	// console.log(viewerContent);
 
 	if (!viewerContent) return <h1>Loading</h1>;
 
@@ -39,6 +38,7 @@ function ProjectViewerContainer(props) {
 			}
 			if (Math.abs(y) >= windowSize.height / 4) {
 				resetViewer();
+				history.pushState({}, "", "/");
 			}
 		},
 		onRest: function() {
