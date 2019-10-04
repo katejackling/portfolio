@@ -27,4 +27,4 @@ function setVH() {
 
 setVH();
 
-window.addEventListener("resize", setVH());
+window.addEventListener("resize", setVH);

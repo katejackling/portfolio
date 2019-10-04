@@ -35,7 +35,7 @@ function ProjectViewerContainer(props) {
 		onFrame: function(params) {
 			let { y } = params;
 
-			if (Math.abs(y) >= windowSize.height / 4) {
+			if (Math.abs(y) >= windowSize.height / 10) {
 				resetViewer();
 				toggleClick(true);
 				history.pushState({}, "", "/");
@@ -93,7 +93,7 @@ function ProjectViewerContainer(props) {
 				{...bind()}
 				style={{
 					opacity: y.interpolate(
-						[-windowSize.height / 4, 0, windowSize.height / 4],
+						[-windowSize.height / 10, 0, windowSize.height / 10],
 						[0, 1, 0]
 					)
 				}}
@@ -107,7 +107,7 @@ function ProjectViewerContainer(props) {
 				style={{
 					transform: viewerOpen ? y.interpolate(y => `translate3d(0,${y}px,0)`) : "none",
 					opacity: y.interpolate(
-						[-windowSize.height / 4, 0, windowSize.height / 4],
+						[-windowSize.height / 10, 0, windowSize.height / 10],
 						[0, 1, 0]
 					)
 				}}

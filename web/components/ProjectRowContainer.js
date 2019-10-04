@@ -22,34 +22,36 @@ function ProjectRowContainer(props) {
 	//console.log(sliderSize, contentSize);
 
 	const [{ x }, set] = useSpring(() => ({
-		x: 0,
-		//config: { mass: 1, tension: 100, friction: 10 },
-		onRest: function() {
-			setTimeout(function() {
-				toggleClick(true);
-			}, 100);
-		}
+		x: 0
 	}));
+
 	const bind = useGesture({
-		onDrag: ({ down, delta, velocity, distance, direction, time, temp = [x.getValue()] }) => {
+		onDrag: ({
+			movement,
+			down,
+			delta,
+			velocity,
+			distance,
+			direction,
+			time,
+			temp = [x.getValue()]
+		}) => {
+			// let isDrag = down
+			toggleClick(!down);
 			const { right, left } = sliderBoundaries;
-			//console.log(down, delta, velocity, distance, direction, time);
+			// console.log(movement);
+
+			// console.log(down, temp[0], delta[0], distance, movement[0], time);
 			set({
 				x: down
 					? clamp(
-							temp[0] + delta[0] * (velocity < 1 ? 1 : velocity * 10),
-							left - sliderSize.width * 0.1,
-							right + sliderSize.width * 0.1
-					  )
-					: clamp(temp[0] + delta[0] * (velocity < 1 ? 1 : velocity * 10), left, right)
-			});
+							temp[0] + delta[0] * (velocity < 100 ? 100 : velocity * 200),
 
-			if (Math.abs(temp[0] + delta[0]) < 2) {
-				toggleClick(true);
-			} else {
-				toggleClick(false);
-			}
-			//return temp;
+							left - sliderSize.width * 0.15,
+							right + sliderSize.width * 0.15
+					  )
+					: clamp(temp[0] + delta[0], left, right)
+			});
 		}
 	});
 
@@ -84,6 +86,12 @@ function ProjectRowContainer(props) {
 					--counterW: calc(2.5em + 0.3rem);
 				}
 
+				html.is--touch .slider {
+					overflow-x: scroll;
+					overflow-y: hidden;
+					-webkit-overflow-scrolling: touch;
+				}
+
 				.slider img.lazyloaded {
 					transition: 0.5s;
 				}
@@ -114,6 +122,10 @@ function ProjectRowContainer(props) {
 				.slider__wrapper {
 					display: inline-block;
 					min-width: 100%;
+				}
+
+				html.is--touch .slider__wrapper {
+					transform: none !important;
 				}
 
 				.slider ul {
