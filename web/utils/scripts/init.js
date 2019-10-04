@@ -1,3 +1,5 @@
+import { setCustomProperty } from "./helpers.js";
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* Detection */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -15,4 +17,14 @@ if (navigator.userAgent.indexOf("Edge") >= 0) {
 	document.documentElement.classList.add("is--edge");
 }
 
-console.log("detect");
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* Normalize VH */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+function setVH() {
+	setCustomProperty("--vH", `${window.innerHeight * 0.01}px`);
+}
+
+setVH();
+
+window.addEventListener("resize", setVH());

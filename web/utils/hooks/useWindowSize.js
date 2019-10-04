@@ -21,7 +21,6 @@ export default function useWindowSize() {
 		function setSize() {
 			let windowSize = getSize();
 			setWindowSize(windowSize);
-			setCustomProperty("--vH", `${windowSize.height * 0.01}px`);
 		}
 
 		setSize();

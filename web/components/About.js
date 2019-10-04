@@ -95,6 +95,10 @@ function About(props) {
 						width: 100%;
 					}
 
+					.colophon h3 {
+						cursor: pointer;
+					}
+
 					.accordion {
 						position: relative;
 						width: 100%;

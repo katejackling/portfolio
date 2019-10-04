@@ -23,7 +23,7 @@ function Index(props) {
 	const { id } = router.query;
 
 	if (process.browser) {
-		require("../utils/scripts/detection");
+		require("../utils/scripts/init");
 	}
 
 	setGlobal({

@@ -6,8 +6,8 @@ import { useSpring, animated, interpolate, config } from "react-spring";
 import * as Scroll from "react-scroll";
 
 function Header(props) {
-	const [headerRef, headerDimensions] = useDimensions({ global: "headerSize" }),
-		[headerSize] = useGlobal("headerSize"),
+	const [headerRef, headerDimensions] = useDimensions(),
+		[headerSize, setHeaderSize] = useGlobal("headerSize"),
 		[navOpen, toggleNav] = useGlobal("navOpen"),
 		[sectionActive, setSection] = useGlobal("sectionActive");
 
@@ -19,10 +19,12 @@ function Header(props) {
 		navOpen && toggleNav(false);
 	});
 
-	let offsetHeader = headerSize && headerSize.height * -1;
+	let offsetHeader = headerDimensions && headerDimensions.height * -1;
+
+	//setHeaderSize(headerDimensions.height);
 
 	useEffect(() => {
-		setCustomProperty("--headerH", `${headerSize ? headerSize.height : 0}px`);
+		setCustomProperty("--headerH", `${headerDimensions ? headerDimensions.height : 0}px`);
 	});
 
 	return (
@@ -133,8 +135,23 @@ function Header(props) {
 						display: flex;
 					}
 
-					nav ul.sections--active li:not(.section--active) {
+					nav ul.sections--active li:not(.section--active):not(:hover) {
 						color: rgba(0, 0, 0, 0.5);
+					}
+
+					body:not(.is--touch)
+						nav:not(:hover)
+						ul.sections--active
+						li:not(.section--active) {
+						display: none;
+					}
+
+					body:not(.is--touch)
+						nav:not(:hover)
+						ul.sections--active
+						li.section--active::after {
+						content: "";
+						margin: 0;
 					}
 
 					nav ul li:not(:last-child)::after {

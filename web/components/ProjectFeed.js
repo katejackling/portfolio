@@ -46,11 +46,11 @@ function ProjectFeed(props) {
 							slug && (
 								<li key={_id} className="project" id={_id}>
 									<h3>
-										<span className="title">{title}</span>
+										<span className="title">{title.trim()}</span>
 										{additional_info
-											? Parser(`, <em>${additional_info}</em>`)
+											? Parser(`, <em>${additional_info.trim()}</em>`)
 											: ""}
-										{year ? `, ${year}` : ""}
+										{year ? `, ${year.trim()}` : ""}
 									</h3>
 									{type !== "film" ? (
 										<ProjectRowContainer
@@ -137,6 +137,11 @@ function ProjectFeed(props) {
 				body:not(.is--touch) .grid ul:hover li:not(:hover) img,
 				body:not(.is--touch) .grid ul:hover li:not(:hover) video {
 					opacity: ${mediaHover ? 0.4 : 1};
+				}
+
+				#stilllife,
+				#commercial {
+					padding-top: var(--marginOuter);
 				}
 
 				@media screen and (max-width: 639px) {
