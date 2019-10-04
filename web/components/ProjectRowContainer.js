@@ -88,8 +88,8 @@ function ProjectRowContainer(props) {
 					transition: 0.5s;
 				}
 
-				body:not(.is--touch) .slider:hover li:not(:hover) img,
-				body:not(.is--touch) .slider:hover li:not(:hover) video {
+				html:not(.is--touch) .slider:hover li:not(:hover) img,
+				html:not(.is--touch) .slider:hover li:not(:hover) video {
 					opacity: 0.33;
 				}
 
@@ -101,13 +101,13 @@ function ProjectRowContainer(props) {
 					transition: 0.5s;
 				}
 
-				body:not(.is--touch) .row:hover .project:hover li:not(:hover) img,
-				body:not(.is--touch) .row:hover .project:hover li:not(:hover) video {
+				html:not(.is--touch) .row:hover .project:hover li:not(:hover) img,
+				html:not(.is--touch) .row:hover .project:hover li:not(:hover) video {
 					opacity: ${mediaHover ? 0.4 : 1};
 				}
 
-				body:not(.is--touch) .row:hover .project:not(:hover),
-				body:not(.is--touch) .row:hover .project:not(:hover) {
+				html:not(.is--touch) .row:hover .project:not(:hover),
+				html:not(.is--touch) .row:hover .project:not(:hover) {
 					opacity: 0.1;
 				} */}
 

@@ -80,10 +80,10 @@ function Video(props) {
 					opacity: 0.8;
 				}
 
-				body:not(.is--touch)
+				html:not(.is--touch)
 					[data-playing="true"]:not(:hover)
 					+ .btn__toggle--play:not(:hover),
-				body.is--touch [data-playing="true"] + .btn__toggle--play {
+				html.is--touch [data-playing="true"] + .btn__toggle--play {
 					opacity: 0;
 				}
 

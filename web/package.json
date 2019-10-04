@@ -17,6 +17,7 @@
 		"@sanity/image-url": "^0.140.14",
 		"@types/react": "^16.9.2",
 		"@zeit/next-css": "^1.0.1",
+		"body-scroll-lock": "^2.6.4",
 		"flickity": "^2.2.1",
 		"groq": "^0.142.0",
 		"gsap": "^2.1.3",

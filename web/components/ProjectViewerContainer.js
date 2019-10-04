@@ -6,6 +6,7 @@ import { useSpring, animated, interpolate, config } from "react-spring";
 import { useGesture } from "react-use-gesture";
 import { clamp, debounce } from "lodash";
 import useLockBodyScroll from "../utils/hooks/useLockBodyScroll";
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
 
 import ProjectViewer from "./ProjectViewer";
 
@@ -77,7 +78,13 @@ function ProjectViewerContainer(props) {
 
 	useEffect(bind, [bind]);
 
-	useLockBodyScroll();
+	useEffect(() => {
+		let targetElement = document.querySelector("#viewer");
+		disableBodyScroll(targetElement);
+		return () => clearAllBodyScrollLocks();
+	}, []);
+
+	//useLockBodyScroll();
 
 	return (
 		<>
@@ -94,6 +101,7 @@ function ProjectViewerContainer(props) {
 				<h2 className="project__viewer__caption">{viewerTitle}</h2>
 			</animated.div>
 			<animated.section
+				id="viewer"
 				className="project__viewer"
 				{...bind()}
 				style={{
