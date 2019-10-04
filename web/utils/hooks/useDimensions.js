@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect, setGlobal } from "reactn";
-// import { DimensionObject, UseDimensionsArgs, UseDimensionsHook } from "./types";
 
 function getDimensionObject(node) {
 	const rect = node.getBoundingClientRect();
@@ -7,6 +6,8 @@ function getDimensionObject(node) {
 	return {
 		width: rect.width,
 		height: rect.height,
+		scrollWidth: node.scrollWidth,
+		scrollHeight: node.scrollHeight,
 		top: "x" in rect ? rect.x : rect.top,
 		left: "y" in rect ? rect.y : rect.left,
 		x: "x" in rect ? rect.x : rect.left,
@@ -26,6 +27,8 @@ function useDimensions(global) {
 
 	useEffect(() => {
 		if (node) {
+			setDimensions(getDimensionObject(node));
+
 			const measure = () => {
 				window.requestAnimationFrame(() => setDimensions(getDimensionObject(node)));
 				// if (!global) {
@@ -34,8 +37,6 @@ function useDimensions(global) {
 				// 	setGlobal(globalObj);
 				// }
 			};
-
-			measure();
 
 			window.addEventListener("resize", measure);
 			// window.addEventListener("scroll", measure);

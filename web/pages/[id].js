@@ -25,6 +25,10 @@ function Index(props) {
 	const data = useClientFetch(`*[slug.current == "${id}"][0]`);
 	console.log(data);
 
+	if (process.browser) {
+		require("../utils/scripts/init");
+	}
+
 	if (data) {
 		const { _id, title, content } = data;
 
@@ -66,7 +70,3 @@ function Index(props) {
 }
 
 export default Index;
-
-// componentDidMount() {
-// 	require("../scripts/document.js");
-// }

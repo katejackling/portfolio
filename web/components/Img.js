@@ -65,8 +65,8 @@ function Img(props) {
 				data-orientation={aspectRatio < 1 ? "portrait" : "landscape"}
 				style={{ "--imgRatio": aspectRatio, "--objFit": objFit }}
 				alt={alt}
-				onMouseOver={() => setMediaHover(true)}
-				onMouseOut={() => setMediaHover(false)}
+				// onMouseOver={() => setMediaHover(true)}
+				// onMouseOut={() => setMediaHover(false)}
 			/>
 			<style jsx global>{`
 				img {

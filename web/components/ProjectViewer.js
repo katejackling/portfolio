@@ -16,6 +16,11 @@ function ProjectViewer(props) {
 		);
 
 	const goNext = () => {
+		// console.log(clickEnabled);
+
+		if (!clickEnabled) {
+			return false;
+		}
 		setPrevIndex(slideIndex);
 		setSlide(nextIndex);
 		setNextIndex(nextIndex === content.length - 1 ? 0 : nextIndex + 1);
@@ -44,23 +49,24 @@ function ProjectViewer(props) {
 	});
 	const resetViewer = useDispatch(resetViewerReducer);
 
-	useEffect(() => {
-		function keyDown() {
-			if (event.keyCode == 37) {
-				goPrev();
-			} else if (event.keyCode == 39) {
-				goNext();
-			} else if (event.keyCode == 27) {
-				resetViewer();
-				history.pushState({}, "", "/");
-			}
+	const keyDown = () => {
+		if (event.keyCode == 37) {
+			goPrev();
+		} else if (event.keyCode == 39) {
+			goNext();
+		} else if (event.keyCode == 27) {
+			resetViewer();
+			history.pushState({}, "", "/");
 		}
+	};
+
+	useEffect(() => {
 		document.addEventListener("keydown", keyDown);
 
 		return () => {
 			document.removeEventListener("keydown", keyDown);
 		};
-	});
+	}, [keyDown]);
 
 	window.onpopstate = event => {
 		resetViewer();
@@ -78,9 +84,7 @@ function ProjectViewer(props) {
 						key={section._key}
 						className={slideIndex === i ? "visible" : "hidden"}
 						onClick={() => {
-							if (clickEnabled) {
-								goNext();
-							}
+							goNext();
 						}}
 					>
 						<ViewerSection {...section} />

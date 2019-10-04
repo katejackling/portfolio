@@ -41,7 +41,7 @@ function Header(props) {
 							smooth={true}
 							duration={500}
 						>
-							Stilllife
+							Still Life
 						</Link>
 					</li>
 					<li className={sectionActive === "commercial" ? "section--active" : ""}>
@@ -144,6 +144,10 @@ function Header(props) {
 						ul.sections--active
 						li:not(.section--active) {
 						display: none;
+					}
+
+					body:not(.is--touch) nav:not(:hover) ul.sections--active li.section--active {
+						font-style: italic;
 					}
 
 					body:not(.is--touch)

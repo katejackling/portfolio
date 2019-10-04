@@ -18,7 +18,7 @@ function ProjectViewerContainer(props) {
 
 	// console.log(viewerContent);
 
-	if (!viewerContent) return <h1>Loading</h1>;
+	if (!viewerContent) return null;
 
 	const resetViewerReducer = (global, dispatch, action) => ({
 		viewerTitle: false,
@@ -26,6 +26,7 @@ function ProjectViewerContainer(props) {
 		viewerID: null,
 		slideIndex: 0
 	});
+
 	const resetViewer = useDispatch(resetViewerReducer);
 
 	const [{ y }, set] = useSpring(() => ({
@@ -33,37 +34,48 @@ function ProjectViewerContainer(props) {
 		onFrame: function(params) {
 			let { y } = params;
 
-			if (Math.abs(y) <= 2) {
-				toggleClick(true);
-			}
 			if (Math.abs(y) >= windowSize.height / 4) {
 				resetViewer();
+				toggleClick(true);
 				history.pushState({}, "", "/");
 			}
-		},
-		onRest: function() {
-			toggleClick(true);
 		}
 	}));
 
-	const bind = useGesture({
-		onDrag: ({ down, delta, velocity }) => {
-			velocity = clamp(velocity, 1, 8);
-			toggleClick(!down);
-			set({
-				y: down ? delta[1] : 0,
-				config: { mass: velocity, tension: 500 * velocity, friction: 50 }
-			});
+	const bind = useGesture(
+		{
+			onDrag: ({ down, delta, velocity, temp = y.getValue() }) => {
+				velocity = clamp(velocity, 1, 10);
+
+				if (temp > 10) {
+					toggleClick(false);
+				} else {
+					toggleClick(true);
+				}
+
+				set({
+					y: down ? temp + delta[1] * (velocity < 1 ? 1 : velocity) : 0,
+					config: {
+						mass: 1,
+						tension: 500 * (velocity < 2 ? 2 : velocity)
+					}
+				});
+			},
+			onWheel: ({ active, delta, velocity, temp = y.getValue() }) => {
+				velocity = clamp(velocity, 1, 10);
+				set({
+					y: active ? temp + delta[1] * -1 * (velocity < 1 ? 1 : velocity) : 0,
+					config: {
+						mass: 1,
+						tension: 500 * (velocity < 2 ? 2 : velocity)
+					}
+				});
+			}
 		},
-		onWheel: ({ active, delta, velocity, temp = y.getValue() }) => {
-			velocity = clamp(velocity, 1, 8);
-			toggleClick(!active);
-			set({
-				y: active ? temp + delta[1] * -1 : 0,
-				config: { mass: velocity, tension: 500 * velocity, friction: 50 }
-			});
-		}
-	});
+		{ domTarget: window }
+	);
+
+	useEffect(bind, [bind]);
 
 	useLockBodyScroll();
 
@@ -75,7 +87,7 @@ function ProjectViewerContainer(props) {
 				style={{
 					opacity: y.interpolate(
 						[-windowSize.height / 4, 0, windowSize.height / 4],
-						[0.2, 1, 0.2]
+						[0, 1, 0]
 					)
 				}}
 			>
@@ -88,7 +100,7 @@ function ProjectViewerContainer(props) {
 					transform: viewerOpen ? y.interpolate(y => `translate3d(0,${y}px,0)`) : "none",
 					opacity: y.interpolate(
 						[-windowSize.height / 4, 0, windowSize.height / 4],
-						[0.2, 1, 0.2]
+						[0, 1, 0]
 					)
 				}}
 			>
