@@ -10,10 +10,11 @@ function IntroText(props) {
 	const enableViewer = (viewerID, slideIndex, slug) => {
 		history.pushState({}, "", "/" + slug);
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
-			const title = res[0].title;
-			const content = res[0].content;
+			const { title, content, additional_info, year } = res[0];
 			setGlobal({
 				viewerTitle: title,
+				viewerSubhead: additional_info,
+				viewerYear: year,
 				viewerOpen: true,
 				viewerContent: content,
 				viewerID,

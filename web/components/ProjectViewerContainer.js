@@ -1,6 +1,6 @@
 import { useState, useEffect, useDispatch, useGlobal } from "reactn";
 import { throws } from "assert";
-
+import Parser from "html-react-parser";
 import useWindowSize from "../utils/hooks/useWindowSize";
 import { useSpring, animated, interpolate, config } from "react-spring";
 import { useGesture } from "react-use-gesture";
@@ -14,16 +14,21 @@ function ProjectViewerContainer(props) {
 	const [clickEnabled, toggleClick] = useState(false),
 		windowSize = useWindowSize(),
 		[viewerTitle] = useGlobal("viewerTitle"),
+		[slideIndex] = useGlobal("slideIndex"),
 		[viewerOpen] = useGlobal("viewerOpen"),
-		[viewerContent] = useGlobal("viewerContent");
+		[viewerContent] = useGlobal("viewerContent"),
+		[viewerSubhead] = useGlobal("viewerSubhead"),
+		[viewerYear] = useGlobal("viewerYear");
 
-	// console.log(viewerContent);
+	console.log(viewerContent);
 
 	if (!viewerContent) return null;
 
 	const resetViewerReducer = (global, dispatch, action) => ({
 		viewerTitle: false,
 		viewerOpen: false,
+		viewerSubhead: false,
+		viewerYear: false,
 		viewerID: null,
 		slideIndex: 0
 	});
@@ -98,7 +103,16 @@ function ProjectViewerContainer(props) {
 					)
 				}}
 			>
-				<h2 className="project__viewer__caption">{viewerTitle}</h2>
+				<h2 className="project__viewer__caption">
+					<span className="title">{viewerTitle && viewerTitle.trim()}</span>
+					<span className="extra">
+						{viewerSubhead ? Parser(`, <em>${viewerSubhead.trim()}</em>`) : ""}
+						{viewerYear ? `, ${viewerYear}` : ""}
+					</span>
+				</h2>
+				{/* <h2 className="project__viewer__caption">{`${viewerTitle} ${slideIndex + 1}/${
+					viewerContent.length
+				}`}</h2> */}
 			</animated.div>
 			<animated.section
 				id="viewer"
@@ -255,8 +269,8 @@ function ProjectViewerContainer(props) {
 					}
 
 					@media screen and (max-width: 639px) {
-						.project__viewer__caption {
-							text-align: center;
+						.extra {
+							display: none;
 						}
 					}
 

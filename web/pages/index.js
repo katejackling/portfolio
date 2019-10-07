@@ -29,6 +29,8 @@ function Index(props) {
 	setGlobal({
 		navOpen: false,
 		viewerTitle: false,
+		viewerSubhead: false,
+		viewerYear: false,
 		viewerOpen: false,
 		viewerContent: null,
 		viewerID: null,

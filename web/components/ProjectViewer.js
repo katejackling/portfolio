@@ -43,7 +43,10 @@ function ProjectViewer(props) {
 	};
 
 	const resetViewerReducer = (global, dispatch, action) => ({
+		viewerTitle: false,
 		viewerOpen: false,
+		viewerSubhead: false,
+		viewerYear: false,
 		viewerID: null,
 		slideIndex: 0
 	});

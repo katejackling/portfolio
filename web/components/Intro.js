@@ -67,18 +67,18 @@ function Intro(props) {
 					transform-origin: top left;
 				}
 
-				body:not(.is--touch)
+				html:not(.is--touch)
 					#intro
 					.intro__section:not(.intro__section--text)
 					figure:hover
 					img,
-				body:not(.is--touch) #intro .intro__section.intro__section--text img:hover,
-				body:not(.is--touch)
+				html:not(.is--touch) #intro .intro__section.intro__section--text img:hover,
+				html:not(.is--touch)
 					#intro
 					.intro__section:not(.intro__section--text)
 					figure:hover
 					video,
-				body:not(.is--touch) #intro .intro__section.intro__section--text video:hover {
+				html:not(.is--touch) #intro .intro__section.intro__section--text video:hover {
 					cursor: pointer;
 					filter: grayscale(1) invert(1);
 				}

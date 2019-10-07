@@ -11,10 +11,11 @@ function Intro75(props) {
 	const enableViewer = (viewerID, slideIndex, slug) => {
 		history.pushState({}, "", "/" + slug);
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
-			const title = res[0].title;
-			const content = res[0].content;
+			const { title, content, additional_info, year } = res[0];
 			setGlobal({
 				viewerTitle: title,
+				viewerSubhead: additional_info,
+				viewerYear: year,
 				viewerOpen: true,
 				viewerContent: content,
 				viewerID,
@@ -29,9 +30,9 @@ function Intro75(props) {
 				<Media asset={asset} type={type} />
 
 				<figcaption>
-					<span className="title">{reference && reference.title}</span>
+					<span className="title">{reference && reference.title.trim()}</span>
 					{reference.additional_info
-						? Parser(`, <em>${reference.additional_info}</em>`)
+						? Parser(`, <em>${reference.additional_info.trim()}</em>`)
 						: ""}
 					{reference.year ? `, ${reference.year}` : ""}
 				</figcaption>

@@ -16,10 +16,11 @@ function IntroPair(props) {
 	const enableViewer = (viewerID, slideIndex, slug) => {
 		history.pushState({}, "", "/" + slug);
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
-			const title = res[0].title;
-			const content = res[0].content;
+			const { title, content, additional_info, year } = res[0];
 			setGlobal({
 				viewerTitle: title,
+				viewerSubhead: additional_info,
+				viewerYear: year,
 				viewerOpen: true,
 				viewerContent: content,
 				viewerID,
@@ -34,9 +35,9 @@ function IntroPair(props) {
 				<Media asset={asset_left} type={type_left} />
 
 				<figcaption>
-					<span className="title">{reference[0] && reference[0].title}</span>
+					<span className="title">{reference[0] && reference[0].title.trim()}</span>
 					{reference[0].additional_info
-						? Parser(`, <em>${reference[0].additional_info}</em>`)
+						? Parser(`, <em>${reference[0].additional_info.trim()}</em>`)
 						: ""}
 					{reference[0].year ? `, ${reference[0].year}` : ""}
 				</figcaption>
@@ -46,9 +47,9 @@ function IntroPair(props) {
 				<Media asset={asset_right} type={type_right} />
 
 				<figcaption>
-					<span className="title">{reference[1] && reference[1].title}</span>
+					<span className="title">{reference[1] && reference[1].title.trim()}</span>
 					{reference[1].additional_info
-						? Parser(`, <em>${reference[1].additional_info}</em>`)
+						? Parser(`, <em>${reference[1].additional_info.trim()}</em>`)
 						: ""}
 					{reference[1].year ? `, ${reference[1].year}` : ""}
 				</figcaption>

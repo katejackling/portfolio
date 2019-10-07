@@ -58,6 +58,8 @@ function ProjectFeed(props) {
 											id={_id}
 											total={total}
 											slug={slug.current}
+											additional_info={additional_info}
+											year={year}
 										/>
 									) : (
 										<ProjectGridContainer
@@ -66,6 +68,8 @@ function ProjectFeed(props) {
 											id={_id}
 											total={total}
 											slug={slug.current}
+											additional_info={additional_info}
+											year={year}
 										/>
 									)}
 								</li>
@@ -134,8 +138,8 @@ function ProjectFeed(props) {
 					transition: 0.5s;
 				}
 
-				body:not(.is--touch) .grid ul:hover li:not(:hover) img,
-				body:not(.is--touch) .grid ul:hover li:not(:hover) video {
+				html:not(.is--touch) .grid ul:hover li:not(:hover) img,
+				html:not(.is--touch) .grid ul:hover li:not(:hover) video {
 					opacity: ${mediaHover ? 0.4 : 1};
 				}
 

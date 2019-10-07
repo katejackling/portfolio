@@ -30,11 +30,13 @@ function Index(props) {
 	}
 
 	if (data) {
-		const { _id, title, content } = data;
+		const { _id, title, content, additional_info, year } = data;
 
 		setGlobal({
 			navOpen: false,
 			viewerTitle: title,
+			viewerSubhead: additional_info,
+			viewerYear: year,
 			viewerOpen: true,
 			viewerContent: content,
 			viewerID: _id,

@@ -3,7 +3,7 @@ import client from "../client";
 import ProjectRowItem from "../components/ProjectRowItem";
 
 function ProjectRow(props) {
-	const { content, id, total, clickEnabled, slug } = props;
+	const { content, id, total, clickEnabled, slug, additional_info, year } = props;
 
 	const enableViewer = (viewerID, slideIndex, slug) => {
 		history.pushState({}, "", "/" + slug);
@@ -14,6 +14,8 @@ function ProjectRow(props) {
 			// console.log(viewerID, slideIndex, content);
 			setGlobal({
 				viewerTitle: title,
+				viewerSubhead: additional_info,
+				viewerYear: year,
 				viewerOpen: true,
 				viewerContent: content,
 				viewerID,

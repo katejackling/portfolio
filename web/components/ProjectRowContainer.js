@@ -20,7 +20,7 @@ function ProjectRowContainer(props) {
 
 	//console.log(sliderSize, contentSize);
 
-	const { content, id, total, slug } = props;
+	const { content, id, total, slug, additional_info, year } = props;
 
 	if (sliderEnabled) {
 		let scrollPos;
@@ -67,6 +67,8 @@ function ProjectRowContainer(props) {
 					total={total}
 					clickEnabled={clickEnabled}
 					slug={slug}
+					additional_info={additional_info}
+					year={year}
 				/>
 			</animated.div>
 			<style jsx global>{`
