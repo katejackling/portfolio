@@ -11,6 +11,8 @@ function Video(props) {
 		[mediaHover, setMediaHover] = useGlobal("mediaHover"),
 		video = useClientFetch(`*[_id == "${asset._ref}"][0]`);
 
+	const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 	if (!video) {
 		return null;
 	}
@@ -53,7 +55,7 @@ function Video(props) {
 				className="player__wrapper"
 				config={{
 					file: {
-						forceHLS: false,
+						forceHLS: !isSafari,
 						attributes: {
 							style: {}
 						}

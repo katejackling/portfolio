@@ -23,13 +23,29 @@ function ProjectRowContainer(props) {
 	const { content, id, total, slug } = props;
 
 	if (sliderEnabled) {
-		let sb = new ScrollBooster({
+		let scrollPos;
+
+		const sb = new ScrollBooster({
 			viewport: sliderRef.ref.current,
 			content: contentRef.ref.current,
-			bounce: true,
+			bounce: false,
 			mode: "x",
+			// onClick: (data, event) => {
+			// 	if (Math.abs(data.dragOffsetPosition.x) > 5) {
+			// 		event.stopPropagation();
+			// 		toggleClick(false);
+			// 	} else {
+			// 		toggleClick(true);
+			// 	}
+			// },
 			onUpdate: data => {
-				contentRef.ref.current.style.transform = `translateX(${-data.position.x}px)`;
+				if (Math.abs(data.dragOffsetPosition.x) > 5) {
+					toggleClick(false);
+				} else {
+					toggleClick(true);
+				}
+				console.log(data.position.x);
+				sliderRef.ref.current.scrollLeft = data.position.x;
 			}
 		});
 	}
@@ -50,7 +66,6 @@ function ProjectRowContainer(props) {
 					id={id}
 					total={total}
 					clickEnabled={clickEnabled}
-					clickEnabled={false}
 					slug={slug}
 				/>
 			</animated.div>
