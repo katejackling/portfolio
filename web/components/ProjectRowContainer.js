@@ -1,12 +1,9 @@
-import { useState, useRef, useGlobal } from "reactn";
+import { useState, useRef, useGlobal, useEffect } from "reactn";
 
 import useMeasure from "../utils/hooks/useMeasure";
 import useWindowSize from "../utils/hooks/useWindowSize";
+import ScrollBooster from "scrollbooster";
 import { useSpring, animated, interpolate, config } from "react-spring";
-import { useGesture } from "react-use-gesture";
-import { clamp } from "lodash";
-
-import client from "../client";
 
 import Media from "./Media";
 import ProjectRow from "../components/ProjectRow";
@@ -19,69 +16,48 @@ function ProjectRowContainer(props) {
 	let sliderBoundaries = { left: sliderSize.width - contentSize.width, right: 0 };
 	let sliderEnabled = contentSize.width > sliderSize.width ? true : false;
 
+	let elemRef = useRef();
+
 	//console.log(sliderSize, contentSize);
 
-	const [{ x }, set] = useSpring(() => ({
-		x: 0
-	}));
-
-	const bind = useGesture({
-		onDrag: ({
-			movement,
-			down,
-			delta,
-			velocity,
-			distance,
-			direction,
-			time,
-			temp = [x.getValue()]
-		}) => {
-			// let isDrag = down
-			toggleClick(!down);
-			const { right, left } = sliderBoundaries;
-			// console.log(movement);
-
-			// console.log(down, temp[0], delta[0], distance, movement[0], time);
-			set({
-				x: down
-					? clamp(
-							temp[0] + delta[0] * (velocity < 100 ? 100 : velocity * 200),
-
-							left - sliderSize.width * 0.15,
-							right + sliderSize.width * 0.15
-					  )
-					: clamp(temp[0] + delta[0], left, right)
-			});
-		}
-	});
-
 	const { content, id, total, slug } = props;
+
+	if (sliderEnabled) {
+		let sb = new ScrollBooster({
+			viewport: sliderRef.ref.current,
+			content: contentRef.ref.current,
+			bounce: true,
+			mode: "x",
+			onUpdate: data => {
+				contentRef.ref.current.style.transform = `translateX(${-data.position.x}px)`;
+			}
+		});
+	}
 
 	return (
 		<div className="slider" {...sliderRef}>
 			<animated.div
 				className="slider__wrapper"
-				{...bind()}
 				{...contentRef}
-				style={{
-					transform: sliderEnabled
-						? interpolate([x], x => `translate3d(${x}px,0,0)`)
-						: "none"
-				}}
+				// style={{
+				// 	transform: sliderEnabled
+				// 		? interpolate([x], x => `translate3d(${x}px,0,0)`)
+				// 		: "none"
+				// }}
 			>
 				<ProjectRow
 					content={content}
 					id={id}
 					total={total}
 					clickEnabled={clickEnabled}
+					clickEnabled={false}
 					slug={slug}
 				/>
 			</animated.div>
 			<style jsx global>{`
 				.slider {
 					width: 100%;
-					overflow-x: hidden;
-					overflow-y: hidden;
+					overflow: hidden;
 					user-select: none;
 					--counterW: calc(2.5em + 0.3rem);
 				}

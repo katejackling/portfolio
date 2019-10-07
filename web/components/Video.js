@@ -53,7 +53,7 @@ function Video(props) {
 				className="player__wrapper"
 				config={{
 					file: {
-						forceHLS: true,
+						forceHLS: false,
 						attributes: {
 							style: {}
 						}
