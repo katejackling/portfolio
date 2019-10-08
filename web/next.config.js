@@ -27,7 +27,9 @@ module.exports = withModernizr(
 		},
 		exportPathMap: async function(defaultPathMap) {
 			const paths = await client
-				.fetch("*[slug.current].slug.current")
+				.fetch(
+					'*[_type == "film" || _type == "stilllife" || _type == "commercial"].slug.current'
+				)
 				.then(data =>
 					data.reduce(
 						(acc, slug) => ({
