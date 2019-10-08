@@ -109,6 +109,7 @@ function ProjectViewerContainer(props) {
 						{viewerSubhead ? Parser(`, <em>${viewerSubhead.trim()}</em>`) : ""}
 						{viewerYear ? `, ${viewerYear}` : ""}
 					</span>
+					<span className="counter">{`, ${slideIndex + 1}/${viewerContent.length}`}</span>
 				</h2>
 				{/* <h2 className="project__viewer__caption">{`${viewerTitle} ${slideIndex + 1}/${
 					viewerContent.length

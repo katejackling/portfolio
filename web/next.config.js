@@ -1,23 +1,23 @@
 const client = require("./client");
 const isProduction = process.env.NODE_ENV === "production";
-// module.exports = {
-//   exportPathMap: async function(defaultPathMap) {
-//     const paths = await client
-//       .fetch('*[_type == "post" && defined(slug)].slug.current')
-//       .then(data =>
-//         data.reduce(
-//           (acc, slug) => ({
-//             "/": { page: "/" },
-//             ...acc,
-//             [`/p/${slug}`]: { page: "/post", query: { slug } }
-//           }),
-//           defaultPathMap
-//         )
-//       )
-//       .catch(console.error);
-//     return paths;
-//   }
-// };
+module.exports = {
+	exportPathMap: async function(defaultPathMap) {
+		const paths = await client
+			.fetch("*[slug.current]")
+			.then(data =>
+				data.reduce(
+					(acc, slug) => ({
+						"/": { page: "/" },
+						...acc,
+						[`/${slug}`]: { page: "[id]", query: { slug } }
+					}),
+					defaultPathMap
+				)
+			)
+			.catch(console.error);
+		return paths;
+	}
+};
 
 const withCSS = require("@zeit/next-css");
 const withModernizr = require("next-plugin-modernizr");
