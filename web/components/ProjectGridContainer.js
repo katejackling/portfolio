@@ -5,7 +5,7 @@ import client from "../client";
 function ProjectGridContainer(props) {
 	const { mediaFeatured, id, slug, additional_info, year } = props;
 	const enableViewer = (viewerID, slideIndex, slug) => {
-		history.pushState({}, "", "/" + slug);
+		history.pushState({}, "", "/post/" + slug);
 
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
 			const title = res[0].title;

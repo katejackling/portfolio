@@ -6,7 +6,7 @@ function ProjectRow(props) {
 	const { content, id, total, clickEnabled, slug, additional_info, year } = props;
 
 	const enableViewer = (viewerID, slideIndex, slug) => {
-		history.pushState({}, "", "/" + slug);
+		history.pushState({}, "", "/post/" + slug);
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
 			// console.log(res[0]);
 			const title = res[0].title;

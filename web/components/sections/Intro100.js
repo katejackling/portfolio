@@ -10,7 +10,7 @@ function Intro100(props) {
 		type = media.condition ? "video" : "image";
 
 	const enableViewer = (viewerID, slideIndex, slug) => {
-		history.pushState({}, "", "/" + slug);
+		history.pushState({}, "", "/post/" + slug);
 		client.fetch(`*[_id == "${viewerID}"]`).then(res => {
 			const { title, content, additional_info, year } = res[0];
 			setGlobal({
