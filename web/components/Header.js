@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useGlobal } from "reactn";
+import { useState, useRef, useEffect, useGlobal, useDispatch } from "reactn";
 
 import useDimensions from "../utils/hooks/useDimensions";
 import { setCustomProperty } from "../utils/scripts/helpers.js";
@@ -9,14 +9,29 @@ function Header(props) {
 	const [headerRef, headerDimensions] = useDimensions(),
 		[headerSize, setHeaderSize] = useGlobal("headerSize"),
 		[navOpen, toggleNav] = useGlobal("navOpen"),
+		[viewerOpen, toggleViewer] = useGlobal("viewerOpen"),
 		[sectionActive, setSection] = useGlobal("sectionActive");
 
 	let Link = Scroll.Link;
 	let Element = Scroll.Element;
 	let Events = Scroll.Events;
 
+	const resetViewerReducer = (global, dispatch, action) => ({
+		viewerTitle: false,
+		viewerOpen: false,
+		viewerSubhead: false,
+		viewerYear: false,
+		viewerID: null,
+		slideIndex: 0
+	});
+	const resetViewer = useDispatch(resetViewerReducer);
+
 	Events.scrollEvent.register("begin", function(to, element) {
 		navOpen && toggleNav(false);
+		if (viewerOpen) {
+			resetViewer();
+			history.pushState({}, "", "/");
+		}
 	});
 
 	let offsetHeader = headerDimensions && headerDimensions.height * -1;
@@ -32,8 +47,12 @@ function Header(props) {
 			<h1>Kate Jackling</h1>
 			<button onClick={() => toggleNav(!navOpen)}>{navOpen ? "Close" : "Menu"}</button>
 			<nav>
-				<ul className={sectionActive ? "sections--active" : ""}>
-					<li className={sectionActive === "stilllife" ? "section--active" : ""}>
+				<ul className={sectionActive && !viewerOpen ? "sections--active" : ""}>
+					<li
+						className={
+							sectionActive === "stilllife" && !viewerOpen ? "section--active" : ""
+						}
+					>
 						<Link
 							to="stilllife"
 							offset={offsetHeader}
@@ -44,7 +63,11 @@ function Header(props) {
 							Still Life
 						</Link>
 					</li>
-					<li className={sectionActive === "commercial" ? "section--active" : ""}>
+					<li
+						className={
+							sectionActive === "commercial" && !viewerOpen ? "section--active" : ""
+						}
+					>
 						<Link
 							to="commercial"
 							offset={offsetHeader}
@@ -55,7 +78,9 @@ function Header(props) {
 							Commercial
 						</Link>
 					</li>
-					<li className={sectionActive === "film" ? "section--active" : ""}>
+					<li
+						className={sectionActive === "film" && !viewerOpen ? "section--active" : ""}
+					>
 						<Link
 							to="film"
 							offset={offsetHeader}
@@ -66,7 +91,9 @@ function Header(props) {
 							Film
 						</Link>
 					</li>
-					<li className={sectionActive === "info" ? "section--active" : ""}>
+					<li
+						className={sectionActive === "info" && !viewerOpen ? "section--active" : ""}
+					>
 						<Link
 							to="info"
 							offset={offsetHeader}
@@ -93,7 +120,7 @@ function Header(props) {
 					display: inline;
 				}
 
-				nav ul li {
+				nav nav ul li {
 					cursor: pointer;
 				}
 
@@ -139,18 +166,18 @@ function Header(props) {
 						color: rgba(0, 0, 0, 0.5);
 					}
 
-					body:not(.is--touch)
+					html:not(.is--touch)
 						nav:not(:hover)
 						ul.sections--active
 						li:not(.section--active) {
 						display: none;
 					}
 
-					body:not(.is--touch) nav:not(:hover) ul.sections--active li.section--active {
+					html:not(.is--touch) nav:not(:hover) ul.sections--active li.section--active {
 						font-style: italic;
 					}
 
-					body:not(.is--touch)
+					html:not(.is--touch)
 						nav:not(:hover)
 						ul.sections--active
 						li.section--active::after {
