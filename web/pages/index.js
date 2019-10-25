@@ -19,7 +19,7 @@ addReactNDevTools();
 
 function Index(props) {
 	const router = useRouter();
-	console.log(router.query);
+	// console.log(router.query);
 	const { id } = router.query;
 
 	if (process.browser) {

@@ -5,8 +5,14 @@ import client from "../../client";
 
 function Intro50(props) {
 	const { media = "", reference = "", layout = "", text } = props;
-	const asset = media.condition ? media.video.mux.asset : media.image.asset,
-		type = media.condition ? "video" : "image";
+
+	const type = media.type;
+
+	if (!type) {
+		return null;
+	}
+
+	const asset = type && type === "video" ? media[type].mux.asset : media[type].asset;
 
 	const enableViewer = (viewerID, slideIndex, slug) => {
 		history.pushState({}, "", "/post/" + slug);

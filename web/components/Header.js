@@ -15,6 +15,7 @@ function Header(props) {
 	let Link = Scroll.Link;
 	let Element = Scroll.Element;
 	let Events = Scroll.Events;
+	let animateScroll = Scroll.animateScroll;
 
 	const resetViewerReducer = (global, dispatch, action) => ({
 		viewerTitle: false,
@@ -38,9 +39,24 @@ function Header(props) {
 
 	//setHeaderSize(headerDimensions.height);
 
+	const keyDown = () => {
+		if (!viewerOpen) {
+			if (event.keyCode == 38) {
+				animateScroll.scrollMore(-window.innerHeight);
+			} else if (event.keyCode == 40) {
+				animateScroll.scrollMore(window.innerHeight);
+			}
+		}
+	};
+
 	useEffect(() => {
 		setCustomProperty("--headerH", `${headerDimensions ? headerDimensions.height : 0}px`);
-	});
+		document.addEventListener("keydown", keyDown);
+
+		return () => {
+			document.removeEventListener("keydown", keyDown);
+		};
+	}, [keyDown]);
 
 	return (
 		<header ref={headerRef} data-nav-active={navOpen}>

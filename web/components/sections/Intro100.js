@@ -4,10 +4,14 @@ import Media from "../../components/Media";
 import client from "../../client";
 
 function Intro100(props) {
-	const { media = "", reference = "" } = props;
+	const { media, reference = "" } = props;
+	const type = media.type;
 
-	const asset = media.condition ? media.video.mux.asset : media.image.asset,
-		type = media.condition ? "video" : "image";
+	if (!type) {
+		return null;
+	}
+
+	const asset = type && type === "video" ? media[type].mux.asset : media[type].asset;
 
 	const enableViewer = (viewerID, slideIndex, slug) => {
 		history.pushState({}, "", "/post/" + slug);
