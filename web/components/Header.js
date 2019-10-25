@@ -42,8 +42,10 @@ function Header(props) {
 	const keyDown = () => {
 		if (!viewerOpen) {
 			if (event.keyCode == 38) {
+				event.preventDefault();
 				animateScroll.scrollMore(-window.innerHeight);
 			} else if (event.keyCode == 40) {
+				event.preventDefault();
 				animateScroll.scrollMore(window.innerHeight);
 			}
 		}
