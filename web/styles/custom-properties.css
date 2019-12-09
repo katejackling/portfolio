@@ -1,5 +1,6 @@
 :root {
-  --marginOuter: 10px;
-  --marginMedium: 3rem;
-  --font-size--large: 3rem;
+	--marginOuter: 10px;
+	--marginMedium: 3rem;
+	--marginLarge: 7.5rem;
+	--font-size--large: 3rem;
 }

@@ -77,8 +77,10 @@ function Intro50(props) {
 
 				@media screen and (max-width: 639px) {
 					.intro__section--50 {
-						padding: var(--marginMedium);
-						min-height: calc(100 * var(--vH));
+						padding: 0 var(--marginMedium);
+						 {
+							/* min-height: calc(100 * var(--vH)); */
+						}
 						display: flex;
 						justify-content: center;
 						align-items: center;

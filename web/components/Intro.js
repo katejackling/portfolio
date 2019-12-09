@@ -50,7 +50,10 @@ function Intro(props) {
 			})}
 			<style jsx global>{`
 				#intro {
-					margin-bottom: var(--marginMedium);
+					 {
+						/* margin-bottom: var(--marginMedium); */
+					}
+					margin-bottom: 15rem;
 				}
 
 				.intro__section,
@@ -86,6 +89,10 @@ function Intro(props) {
 				@media screen and (max-width: 639px) {
 					.intro__section:not(.intro__section--text) figcaption {
 						display: none;
+					}
+
+					.intro__section:not(:last-child) {
+						margin-bottom: var(--marginLarge);
 					}
 				}
 

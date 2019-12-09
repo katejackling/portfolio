@@ -24,6 +24,7 @@ function ProjectFeed(props) {
 
 	return (
 		<article ref={ref} id={type} className={type !== "film" ? "projects row" : "projects grid"}>
+			<h2>{type.charAt(0).toUpperCase() + type.slice(1)}</h2>
 			<ul>
 				{posts.map(
 					({
@@ -94,7 +95,11 @@ function ProjectFeed(props) {
 
 				.projects h2 {
 					padding: 0 var(--marginOuter);
-					text-transform: uppercase;
+					font-style: italic;
+				}
+
+				#film h2 {
+					margin-bottom: calc(-1 * var(--marginOuter));
 				}
 
 				.row h3 {
@@ -158,8 +163,7 @@ function ProjectFeed(props) {
 
 				@media screen and (min-width: 640px) {
 					.projects h2 {
-						width: 100%;
-						text-align: center;
+						display: none;
 					}
 
 					.grid h3 {

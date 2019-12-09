@@ -68,8 +68,10 @@ function IntroText(props) {
 					padding: 0;
 				}
 
-				.intro__section--text:not(:first-child) {
+				 {
+					/* .intro__section--text:not(:first-child) {
 					padding-top: var(--marginMedium);
+				} */
 				}
 
 				.intro__section--text figcaption {
@@ -83,8 +85,8 @@ function IntroText(props) {
 					display: flex;
 					flex-wrap: wrap;
 					justify-content: flex-start;
-					padding: calc(var(--marginOuter) / 4 * 3);
-					padding-top: 0;
+					padding: 0 calc(var(--marginOuter) / 4 * 3);
+					margin-bottom: calc(var(--marginOuter) / -4);
 				}
 
 				.intro__section--text img,
@@ -93,16 +95,15 @@ function IntroText(props) {
 					height: calc(
 						(104px + (160 - 104) * (100vw - 360px) / (640 - 360)) + var(--marginOuter)
 					);
-					 {
-						/* height: calc(10rem + var(--marginOuter)); */
-					}
 					padding: calc(var(--marginOuter) / 4);
 				}
 
-				@media screen and (max-width: 639px) {
+				 {
+					/* @media screen and (max-width: 639px) {
 					.intro__section--text {
 						min-height: calc(100 * var(--vH));
 					}
+				} */
 				}
 				@media screen and (min-width: 640px) {
 					.intro__section--text img,
