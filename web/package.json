@@ -24,7 +24,7 @@
 		"hls.js": "^0.12.4",
 		"html-react-parser": "^0.9.1",
 		"lazysizes": "^5.1.1",
-		"lodash": "^4.17.15",
+		"lodash": "^4.17.19",
 		"next": "^9.0.6",
 		"next-fonts": "^0.18.0",
 		"next-plugin-modernizr": "0.0.3",
